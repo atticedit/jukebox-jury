@@ -2,9 +2,9 @@
 
 ### Story 1
 
-As a music fanatic,
+As a music fanatic who also needs to get things done,
 I want to enter information about songs I've listened to
-in order to keep track of which I like best and have found I can concentrate to.
+in order to keep track of which ones keep me focused.
 
 ##### Usage
 
@@ -20,7 +20,7 @@ in order to keep track of which I like best and have found I can concentrate to.
 
 ### Story 2
 
-As a music fanatic,
+As a music fanatic who also needs to get things done,
 I want to update information about songs when I have changes
 in order to keep things up to date.
 
@@ -38,7 +38,7 @@ in order to keep things up to date.
 
 ### Story 3
 
-As a music collector,
+As a music fanatic who also needs to get things done,
 I want to delete information about songs I no longer own
 in order to keep the information relevant.
 
@@ -55,30 +55,13 @@ in order to keep the information relevant.
 
 ### Story 4
 
-As a listener wanting to understand my music tastes better,
-I want to get the average number of words for songs I've given each rating
-in order to see whether I give higher ratings to songs with long names.
-
-##### Usage
-
-    ruby jury.rb stats "Name"
-
-##### Acceptance Criteria
-
-* For each rating from ★ to ★★★★★, prints the rating, the number of songs with that rating, and the average number of words per song name
-* Ignores ratings with no matching songs
-
----
-
-### Story 5
-
-As someone needing music to listen to while concentrating on tasks,
-I want to view a report on songs
+As a music fanatic who also needs to get things done,
+I want to view a report on songs I've listened to
 in order to see what genres and intensity levels allow me to concentrate best.
 
 ##### Usage
 
-    ruby jury.rb stats "Focusing"
+    ruby jury.rb stats
 
 ##### Acceptance Criteria
 
@@ -87,10 +70,10 @@ in order to see what genres and intensity levels allow me to concentrate best.
 
 ---
 
-### Story 6
+### Story 5
 
-As someone needing music to listen to while concentrating on tasks,
-I want to view a report on artists
+As a music fanatic who also needs to get things done,
+I want to view a report on artists in my collection
 in order to see which are best to listen to while concentrating.
 
 ##### Usage
@@ -99,6 +82,6 @@ in order to see which are best to listen to while concentrating.
 
 ##### Acceptance Criteria
 
-* Prints a report of artists I listen to, sorted by how often their songs appear in the list of songs I marked as being good for concentration
+* Prints a report of artists sorted by how many of their songs I marked as being good for concentration
 * Ignores artists with no matching songs
-* Limits printing to the 50 artists with the most songs appearing
+* Limits printing to the 50 artists with the most matching songs
