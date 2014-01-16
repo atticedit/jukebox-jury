@@ -10,25 +10,27 @@ I listen to music as much of my waking life as possible, and happily take in nea
 
   * Simple feature set
   * CRUD
+  * Test-driven development
   * A query or two that will reveal connections not otherwise seen
 	
 ## Feature List
 
-  * Print the list of songs played within a specified timeframe
+  * Print the list of all songs played within a specified timeframe
   * Manually enter, update, and delete data for songs:
     * Title
     * Artist
     * Genre
+    * Play Date
     * Intensity (integer from 1 to 5 representing a point on the spectrum from tranquil to frenzied)
-    * Focusing (“true” if I can code to the song)
-  * Print a report of songs I can code to, correlated to Genre and Commotion
+    * Focusing (“true” if conducive to concentration)
+  * Print a report of songs with a Focusing value of "true", correlated to Genre and Intensity
 	
 ## Interesting Queries
 
-Which combinations of Genre and Commotion are good to listen to while coding?
+Which combinations of Genre and Intensity are good to listen to while coding?
 
-For songs falling into each ratings group, from ★ to ★★★★★, what’s the average word length of a song title?
+For songs falling into each ratings group, from ★ to ★★★★★, what’s the average number of words per song title?
 
 ## Data Source
 
-I’ll export an XML file of playlist data from my iTunes library comprised of tracks (excluding spoken word tracks and other non-songs) played in the last 3 months.
+An XML file of playlist data from iTunes comprised of tracks (excluding spoken word tracks and other non-songs) that have values entered in the Rating, Intensity, and Focusing metadata fields.
