@@ -21,8 +21,9 @@ I listen to music as much of my waking life as possible, which includes while I'
     * Genre
     * Intensity (integer from 1 to 5 representing a point on the spectrum from tranquil to frenzied)
     * Focusing (“true” if conducive to concentration)
-  * Print a report of the combinations of Genre and Intensity most conducive to concentration
-  * Print a list of the 50 artists whose songs are most conducive to concentration
+  * Print a list of the 20 artists most conducive to concentration
+  * Print a list of the 20 genres most conducive to concentration
+  * Print a report of the combinations of genre and intensity most conducive to concentration
 
 ## Interesting Query
 
@@ -30,4 +31,4 @@ Which combinations of Genre and Intensity are good to listen to while coding?
 
 ## Data Source
 
-An XML file of playlist data from iTunes comprised of tracks (excluding spoken word tracks and other non-songs) that have values entered for Rating, Intensity, and Focusing.
+An XML file of playlist data from iTunes comprised of tracks (excluding spoken word tracks and other non-songs) that have values entered for Name, Artist, Genre, Intensity, and Focusing.

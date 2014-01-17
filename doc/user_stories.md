@@ -56,23 +56,6 @@ in order to keep the information relevant.
 ### Story 4
 
 As a music fanatic who also needs to get things done,
-I want to view a report on songs I've listened to
-in order to see what genres and intensity levels allow me to concentrate best.
-
-##### Usage
-
-    ruby jury.rb stats
-
-##### Acceptance Criteria
-
-* Prints a report of genres, intensities, and combinations of the two, sorted by how often they appear in the list of songs I marked as being good for concentration
-* Ignores genres or intensities with no matching songs
-
----
-
-### Story 5
-
-As a music fanatic who also needs to get things done,
 I want to view a report on artists in my collection
 in order to see which are best to listen to while concentrating.
 
@@ -82,6 +65,41 @@ in order to see which are best to listen to while concentrating.
 
 ##### Acceptance Criteria
 
-* Prints a report of artists sorted by how many of their songs I marked as being good for concentration
-* Ignores artists with no matching songs
-* Limits printing to the 50 artists with the most matching songs
+* Prints a report of artists sorted by how many of the artist's songs I marked as being good for concentration
+* Ignores artists that have no songs I can concentrate to
+* Limits printing to the 20 artists with the most songs I can concentrate to
+
+---
+
+### Story 5
+
+As a music fanatic who also needs to get things done,
+I want to view a report on genres in my collection
+in order to see which are best to listen to while concentrating.
+
+##### Usage
+
+    ruby jury.rb stats "Genre"
+
+##### Acceptance Criteria
+
+* Prints a report of genres sorted by how many songs in the genre I marked as being good for concentration
+* Ignores genres that have no songs I can concentrate to
+* Limits printing to the 20 genres with the most songs I can concentrate to
+
+---
+
+### Story 6
+
+As a music fanatic who also needs to get things done,
+I want to view a report on songs I've listened to
+in order to see what combinations of genres and intensity levels allow me to concentrate best.
+
+##### Usage
+
+    ruby jury.rb stats "Overview"
+
+##### Acceptance Criteria
+
+* Prints a report of combinations of genres and intensities, sorted by how many songs with that combination I marked as being good for concentration
+* Ignores genre/intensity level combinations that have no songs I can concentrate to
