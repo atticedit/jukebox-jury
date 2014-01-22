@@ -13,7 +13,7 @@ in order to keep track of which ones keep me focused.
 ##### Acceptance Criteria
 
 * If the song is already in the database, asks if I want to update the existing record instead
-* Gives me one prompt at a time for each attribute (Artist, Genre, etc.) of the song
+* Gives me one prompt at a time for the song's Artist, Genre, Intensity, & Focusing attributes
 * Saves all the information I've given for the song
 
 ---
