@@ -18,4 +18,24 @@ class TestAddingSong < MiniTest::Unit::TestCase
     assert false, "Missing test implementation"
   end
 
+  def test_prompt_given_for_artist_attribute
+    skip "needs implementation"
+    assert false, "Missing test implementation"
+  end
+
+  def test_prompt_given_for_genre_attribute
+    skip "needs implementation"
+    assert false, "Missing test implementation"
+  end
+
+  def test_prompt_given_for_intensity_attribute
+    skip "needs implementation"
+    assert false, "Missing test implementation"
+  end
+
+  def test_prompt_given_for_focusing_attribute
+    skip "needs implementation"
+    assert false, "Missing test implementation"
+  end
+
 end
