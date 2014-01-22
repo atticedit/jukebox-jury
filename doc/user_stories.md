@@ -55,6 +55,24 @@ in order to keep the information relevant.
 
 ---
 
+### Importing Data
+
+As a music fanatic who also needs to get things done,
+I want to bring in data I've exported from iTunes about my songs
+in order to have the best information for locating more songs I can concentrate to.
+
+##### Usage
+
+    jury import songs.xml
+
+##### Acceptance Criteria
+
+* Asks me to verify that I want to import the file
+* If I verify, adds the data from the imported file to my database
+* Prints a summary of the records saved to the database
+
+---
+
 ### Reporting on Artists
 
 As a music fanatic who also needs to get things done,
