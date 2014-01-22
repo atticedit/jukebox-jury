@@ -1,6 +1,6 @@
 # User Stories
 
-### Story 1
+### Creating a Record
 
 As a music fanatic who also needs to get things done,
 I want to enter information about songs I've listened to
@@ -12,13 +12,13 @@ in order to keep track of which ones keep me focused.
 
 ##### Acceptance Criteria
 
+* If the song is already in the database, asks if I want to update the information instead
 * Prompts me for each piece of information (Artist, Genre, etc.) for the song
 * Saves all the information I've given for the song
-* If the song is already in the database, asks if I want to update the information
 
 ---
 
-### Story 2
+### Updating a Record
 
 As a music fanatic who also needs to get things done,
 I want to update information about songs when I have changes
@@ -30,13 +30,14 @@ in order to keep things up to date.
 
 ##### Acceptance Criteria
 
-* Shows me each piece of information stored for the song and asks me if I want to update it
+* If no song by that name is in the database, asks if I want to create a record instead
+* Shows me each piece of information stored for the song on numbered lines and asks me which line I want to update
 * Retains all the information I've declined to update
 * Saves all the new information I've given for the song
 
 ---
 
-### Story 3
+### Deleting a Record
 
 As a music fanatic who also needs to get things done,
 I want to delete information about songs I no longer own
@@ -48,12 +49,13 @@ in order to keep the information relevant.
 
 ##### Acceptance Criteria
 
+* If no song by that name is in the database, gives an error
 * Asks me to verify that I want to delete
-* If I verify, deletes all information for the song
+* If I verify, deletes the record for the song
 
 ---
 
-### Story 4
+### Reporting on Artists
 
 As a music fanatic who also needs to get things done,
 I want to view a report on artists in my collection
@@ -71,7 +73,7 @@ in order to see which are best to listen to while concentrating.
 
 ---
 
-### Story 5
+### Reporting on Genres
 
 As a music fanatic who also needs to get things done,
 I want to view a report on genres in my collection
@@ -83,13 +85,13 @@ in order to see which are best to listen to while concentrating.
 
 ##### Acceptance Criteria
 
-* Prints a report of genres sorted by how many songs in the genre I marked as being good for concentration
+* Prints a report of genres sorted by the number of songs in the genre I marked as being good for concentration
 * Ignores genres that have no songs I can concentrate to
 * Limits printing to the 20 genres with the most songs I can concentrate to
 
 ---
 
-### Story 6
+### Reporting on Genre/Intensity Combinations
 
 As a music fanatic who also needs to get things done,
 I want to view a report on songs I've listened to
@@ -101,5 +103,5 @@ in order to see what combinations of genres and intensity levels allow me to con
 
 ##### Acceptance Criteria
 
-* Prints a report of combinations of genres and intensities, sorted by how many songs with that combination I marked as being good for concentration
+* Prints a report of combinations of genres and intensities, sorted by the number of songs with that combination I marked as being good for concentration
 * Ignores genre/intensity level combinations that have no songs I can concentrate to
