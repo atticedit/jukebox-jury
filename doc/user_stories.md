@@ -8,12 +8,12 @@ in order to keep track of which ones keep me focused.
 
 ##### Usage
 
-    ruby jury.rb --add "Celebrated Summer"
+    jury add "Celebrated Summer"
 
 ##### Acceptance Criteria
 
-* If the song is already in the database, asks if I want to update the information instead
-* Prompts me for each piece of information (Artist, Genre, etc.) for the song
+* If the song is already in the database, asks if I want to update the existing record instead
+* Gives me one prompt at a time for each piece of information (Artist, Genre, etc.) for the song
 * Saves all the information I've given for the song
 
 ---
@@ -26,12 +26,12 @@ in order to keep things up to date.
 
 ##### Usage
 
-    ruby jury.rb --update "Pancake Lizard"
+    jury update "Pancake Lizard"
 
 ##### Acceptance Criteria
 
 * If no song by that name is in the database, asks if I want to create a record instead
-* Shows me each piece of information stored for the song on numbered lines and asks me which line I want to update
+* Shows me each piece of information stored for the song on its own numbered line and asks me which line I want to update
 * Retains all the information I've declined to update
 * Saves all the new information I've given for the song
 
@@ -45,7 +45,7 @@ in order to keep the information relevant.
 
 ##### Usage
 
-    ruby jury.rb --delete "Airport Surroundings"
+    jury delete "Airport Surroundings"
 
 ##### Acceptance Criteria
 
@@ -81,7 +81,8 @@ in order to see which are best to listen to while concentrating.
 
 ##### Usage
 
-    ruby jury.rb stats "Artist"
+    jury stats --artist
+    jury stats -a
 
 ##### Acceptance Criteria
 
@@ -99,7 +100,8 @@ in order to see which are best to listen to while concentrating.
 
 ##### Usage
 
-    ruby jury.rb stats "Genre"
+    jury stats --genre
+    jury stats -g
 
 ##### Acceptance Criteria
 
@@ -117,7 +119,9 @@ in order to see what combinations of genres and intensity levels allow me to con
 
 ##### Usage
 
-    ruby jury.rb stats "Overview"
+    jury stats --overview
+    jury stats -o
+
 
 ##### Acceptance Criteria
 
