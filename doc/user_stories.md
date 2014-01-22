@@ -8,12 +8,12 @@ in order to keep track of which ones keep me focused.
 
 ##### Usage
 
-    jury add "Celebrated Summer"
+    ./jury add "Celebrated Summer"
 
 ##### Acceptance Criteria
 
 * If the song is already in the database, asks if I want to update the existing record instead
-* Gives me one prompt at a time for each piece of information (Artist, Genre, etc.) for the song
+* Gives me one prompt at a time for each attribute (Artist, Genre, etc.) of the song
 * Saves all the information I've given for the song
 
 ---
@@ -26,12 +26,12 @@ in order to keep things up to date.
 
 ##### Usage
 
-    jury update "Pancake Lizard"
+    ./jury update "Pancake Lizard"
 
 ##### Acceptance Criteria
 
 * If no song by that name is in the database, asks if I want to create a record instead
-* Shows me each piece of information stored for the song on its own numbered line and asks me which line I want to update
+* Shows me each attribute stored for the song on its own numbered line and asks me which line I want to update
 * Retains all the information I've declined to update
 * Saves all the new information I've given for the song
 
@@ -45,7 +45,7 @@ in order to keep the information relevant.
 
 ##### Usage
 
-    jury delete "Airport Surroundings"
+    ./jury delete "Airport Surroundings"
 
 ##### Acceptance Criteria
 
@@ -63,7 +63,7 @@ in order to have the best information for locating more songs I can concentrate 
 
 ##### Usage
 
-    jury import songs.xml
+    ./jury import songs.xml
 
 ##### Acceptance Criteria
 
@@ -81,8 +81,8 @@ in order to see which are best to listen to while concentrating.
 
 ##### Usage
 
-    jury stats --artist
-    jury stats -a
+    ./jury stats --artist
+    ./jury stats -a
 
 ##### Acceptance Criteria
 
@@ -100,8 +100,8 @@ in order to see which are best to listen to while concentrating.
 
 ##### Usage
 
-    jury stats --genre
-    jury stats -g
+    ./jury stats --genre
+    ./jury stats -g
 
 ##### Acceptance Criteria
 
@@ -119,8 +119,8 @@ in order to see what combinations of genres and intensity levels allow me to con
 
 ##### Usage
 
-    jury stats --overview
-    jury stats -o
+    ./jury stats --overview
+    ./jury stats -o
 
 
 ##### Acceptance Criteria
