@@ -1,3 +1,26 @@
 #!/usr/bin/env ruby
 
-puts "You must provide the name of the song you\'re adding."
+require_relative 'lib/environment'
+require_relative 'lib/parse_arguments'
+
+command = ARGV[0]
+options = ParseArguments.parse
+options[:name] = ARGV[1]
+
+error_messages = ParseArguments.validate(options)
+if error_messages.empty?
+  require "sqlite3"
+  database = Environment.database_connection(options[:environment])
+  # This is ripe for a SQL injection attack:
+  values_string = "'#{options[:name]}',
+                   '#{options[:artist]}',
+                   '#{options[:genre]}',
+                   #{options[:intensity]},
+                   #{options[:focusing]}"
+  statement = "insert into songs(name, artist, genre, intensity, focusing) values(#{values_string})"
+  database.execute(statement)
+  puts "A song by #{options[:artist]} was added, named \"#{options[:name]}\"."
+  puts "It's in the #{options[:genre]} genre, with intensity of #{options[:intensity]} and focusing value of #{options[:focusing]}."
+else
+  puts error_messages
+end
