@@ -10,7 +10,8 @@ options[:name] = ARGV[1]
 error_messages = ParseArguments.validate(options)
 if error_messages.empty?
   require "sqlite3"
-  database = Environment.database_connection(options[:environment])
+  Environment.environment = options[:environment] || "production"
+  database = Environment.database_connection
   # This is ripe for a SQL injection attack:
   values_string = "'#{options[:name]}',
                    '#{options[:artist]}',
