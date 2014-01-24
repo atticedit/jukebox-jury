@@ -17,3 +17,5 @@ tmp
 _yardoc
 
 *.sqlite3
+
+logs/*.log
