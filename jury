@@ -37,6 +37,9 @@ elsif command == "add"
   else
     puts error_messages
   end
+elsif command == "list"
+  puts "Songs in the database:"
+  puts Song.all
 else
-    puts "Available commands are 'add' and 'search'."
+    puts "Available commands are 'add', 'list,' and 'search.'"
 end

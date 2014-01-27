@@ -10,7 +10,7 @@ class Song
   def save
     database = Environment.database_connection
     # Should be rewritten to prevent SQL injection attack:
-    database.execute("insert into songs(name, artist, genre, ) values('#{name}', #{artist}, #{genre}, #{intensity}, #{focusing})")
+    database.execute("insert into songs(name, artist, genre, intensity, focusing) values('#{name}', #{artist}, #{genre}, #{intensity}, #{focusing})")
   end
 
   def self.all
