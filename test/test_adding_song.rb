@@ -1,5 +1,4 @@
 require_relative 'helper'
-require 'sqlite3'
 
 class TestAddingSongs < JuryTest
 
@@ -52,6 +51,18 @@ class TestAddingSongs < JuryTest
   def test_error_message_for_missing_focusing
     command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --genre Punk --intensity 5"
     expected = "You must provide the focusing value of the song you\'re adding."
+    assert_command_output expected, command
+  end
+
+  def test_error_message_for_missing_genre_and_focusing
+    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5"
+    expected = "You must provide the genre and focusing value of the song you\'re adding."
+    assert_command_output expected, command
+  end
+
+  def test_error_message_for_missing_artist_and_genre_and_intensity_and_focusing
+    command = "./jury add 'Celebrated Summer'"
+    expected = "You must provide the artist and genre and intensity and focusing value of the song you\'re adding."
     assert_command_output expected, command
   end
 
