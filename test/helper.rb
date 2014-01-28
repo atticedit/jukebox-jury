@@ -2,8 +2,11 @@ require 'minitest/autorun'
 require_relative '../lib/environment'
 
 class JuryTest < MiniTest::Unit::TestCase
-  def database
+  def setup
     Environment.environment = "test"
+  end
+
+  def database
     Environment.database_connection
   end
 
