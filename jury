@@ -2,52 +2,55 @@
 
 require_relative 'lib/environment'
 require_relative 'lib/parse_arguments'
+require_relative 'lib/interactions'
 
-command = ARGV[0]
-options = ParseArguments.parse
-options[:name] ||= ARGV[1]
+class Jury
+  include Interactions
+  attr_reader :options
 
-Environment.environment = options[:environment] || "production"
-database = Environment.database_connection
-
-if command == "search"
-  puts "Enter all or part of a song name to search for:"
-  input = $stdin.gets.chomp
-  puts "Searching for: #{input}"
-  statement = "select songs.name from songs where name LIKE '%#{input}%'"
-  results = database.execute(statement)
-  puts results
-  if results.empty?
-    puts "No results found."
+  def initialize
+    @options = ParseArguments.parse
+    options[:name] ||= ARGV[1]
+    @options[:command] = ARGV[0]
+    Environment.environment = @options[:environment] || "production"
   end
-elsif command == "add"
-  error_messages = ParseArguments.validate(options)
-  if error_messages.empty?
 
-    # Ideally rewritten to prevent SQL injection attack:
-    values_string = "'#{options[:name]}',
-                     '#{options[:artist]}',
-                     '#{options[:genre]}',
-                      #{options[:intensity]},
-                      #{options[:focusing]}"
-    statement = "insert into songs(name, artist, genre, intensity, focusing) values(#{values_string})"
-    database.execute(statement)
-    puts "A song by #{options[:artist]} was added, named '#{options[:name]}'."
-    puts "It's in the #{options[:genre]} genre, with intensity of #{options[:intensity]} and focusing value of #{options[:focusing]}."
-  else
-    puts error_messages
+  def main
+    database = Environment.database_connection
+
+    if options[:command] == "search"
+      search_term = ask("Enter all or part of a song name to search for:")
+
+      puts "Searching for: #{search_term}"
+      statement = "select songs.name from songs where name LIKE '%#{search_term}%'"
+      results = database.execute(statement)
+      puts results
+    elsif options[:command] == "add"
+      error_messages = ParseArguments.validate(options)
+      if error_messages.empty?
+        song = Song.new(options)
+        song.save
+        puts "A song by #{options[:artist]} was added, named '#{options[:name]}'."
+        puts "It's in the #{options[:genre]} genre, with intensity of #{options[:intensity]} and focusing value of #{options[:focusing]}."
+      else
+        puts error_messages
+      end
+    elsif options[:command] == "list"
+      puts "Songs in the database:"
+      puts Song.all
+    elsif options[:command] == "edit"
+      if song = Song.find(options[:id])
+        song.update(options)
+        puts "Song #{song.id} by #{song.artist} is now named '#{song.name}'."
+        puts "It's in the #{song.genre} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}."
+      else
+        puts "Song #{options[:id]} couldn't be found."
+      end
+    else
+        puts "Available commands are 'add', 'edit', 'list', and 'search.'"
+    end
   end
-elsif command == "list"
-  puts "Songs in the database:"
-  puts Song.all
-elsif command == "edit"
-  if song = Song.find(options[:id])
-    song.update(options)
-    puts "Song #{song.id} by #{song.artist} is now named '#{song.name}'."
-    puts "It's in the #{song.genre} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}."
-  else
-    puts "Song #{options[:id]} couldn't be found."
-  end
-else
-    puts "Available commands are 'add', 'edit', 'list', and 'search.'"
 end
+
+jury = Jury.new()
+jury.main()
