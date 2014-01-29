@@ -58,6 +58,32 @@ class TestSong < JuryTest
     assert_equal song.id, found.id
   end
 
+  def test_search_returns_song_objects
+    Song.create(name: "Pancake Lizard", artist: "Aphex Twin", genre: "Electronic", intensity: 3, focusing: 0)
+    Song.create(name: "Cantus In Memory Of Benjamin Britten", artist: "Arvo Pärt", genre: "Classical", intensity: 4, focusing: 1)
+    Song.create(name: "Yègellé Tezeta (My Own Memory)", artist: "Mulatu Astatke", genre: "Ethiopian Jazz", intensity: 4, focusing: 1)
+    results = Song.search("Memory")
+    assert results.all?{ |result| result.is_a? Song }, "Not all results were songs."
+  end
+
+  def test_search_returns_appropriate_results
+    skip
+    song1 = Song.create(name: "Pancake Lizard", artist: "Aphex Twin", genre: "Electronic", intensity: 3, focusing: 0)
+    song2 = Song.create(name: "Cantus In Memory Of Benjamin Britten", artist: "Arvo Pärt", genre: "Classical", intensity: 4, focusing: 1)
+    song3 = Song.create(name: "Yègellé Tezeta (My Own Memory)", artist: "Mulatu Astatke", genre: "Ethiopian Jazz", intensity: 4, focusing: 1)
+    expected = [song2, song3]
+    actual = Song.search("Memory")
+    assert_equal expected, actual
+  end
+
+  def test_search_returns_empty_array_if_no_results
+    Song.create(name: "Pancake Lizard", artist: "Aphex Twin", genre: "Electronic", intensity: 3, focusing: 0)
+    Song.create(name: "Cantus In Memory Of Benjamin Britten", artist: "Arvo Pärt", genre: "Classical", intensity: 4, focusing: 1)
+    Song.create(name: "Yègellé Tezeta (My Own Memory)", artist: "Mulatu Astatke", genre: "Ethiopian Jazz", intensity: 4, focusing: 1)
+    results = Song.search("Cattle")
+    assert_equal [], results
+  end
+
   def test_all_returns_all_songs_in_alphabetical_order
     Song.create(name: "Tune Up", artist: "Chet Baker", genre: "Jazz", intensity: 4, focusing: 1)
     Song.create(name: "Out Of Body", artist: "Japanther", genre: "Punk", intensity: 4, focusing: 1)

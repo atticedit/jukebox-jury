@@ -42,9 +42,13 @@ class Song
   end
 
   def self.all
+    search
+  end
+
+  def self.search(search_term = nil)
     database = Environment.database_connection
     database.results_as_hash = true
-    results = database.execute("select * from songs order by name ASC")
+    results = database.execute("select songs.* from songs where name LIKE '%#{search_term}%' order by name ASC")
     results.map do |row_hash|
       song = Song.new(name: row_hash["name"], artist: row_hash["artist"], genre: row_hash["genre"], intensity: row_hash["intensity"], focusing: row_hash["focusing"])
       song.send("id=", row_hash["id"])

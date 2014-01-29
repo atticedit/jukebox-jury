@@ -15,14 +15,9 @@ class Jury
 
   def main
     database = Environment.database_connection
-
     if options[:command] == "search"
       search_term = ask("Enter all or part of a song name to search for:")
-
-      puts "Searching for: #{search_term}"
-      statement = "select songs.name from songs where name LIKE '%#{search_term}%'"
-      results = database.execute(statement)
-      puts results
+      search_songs_for(search_term)
     elsif options[:command] == "add"
       error_messages = ArgumentParser.validate(options)
       if error_messages.empty?
@@ -44,7 +39,7 @@ class Jury
         puts "Song #{options[:id]} couldn't be found."
       end
     else
-        puts "Available commands are 'add', 'edit', 'list', and 'search.'"
+      puts "Available commands are 'add', 'edit', 'list', and 'search.'"
     end
   end
 
@@ -52,6 +47,12 @@ class Jury
     puts "Songs in the database:"
     puts Song.all
   end
+
+  def search_songs_for(search_term)
+    puts "Searching for: #{search_term}"
+    puts Song.search(search_term)
+  end
+
 end
 
 jury = Jury.new()
