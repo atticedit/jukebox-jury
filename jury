@@ -34,8 +34,7 @@ class Jury
         puts error_messages
       end
     elsif options[:command] == "list"
-      puts "Songs in the database:"
-      puts Song.all
+      list_songs()
     elsif options[:command] == "edit"
       if song = Song.find(options[:id])
         song.update(options)
@@ -47,6 +46,11 @@ class Jury
     else
         puts "Available commands are 'add', 'edit', 'list', and 'search.'"
     end
+  end
+
+  def list_songs()
+    puts "Songs in the database:"
+    puts Song.all
   end
 end
 
