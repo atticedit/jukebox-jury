@@ -8,6 +8,32 @@ class TestSong < JuryTest
     assert_equal expected, song.to_s
   end
 
+  def test_update_doesnt_insert_new_row
+    song = Song.new(name: "Cruso", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
+    song_count_before_update = database.execute("select count(id) from songs")[0][0]
+    song.update(name: "Crusoe")
+    songs_count_after_update = database.execute("select count(id) from songs")[0][0]
+    assert_equal song_count_before_update + 1, songs_count_after_update
+  end
+
+  def test_update_saves_to_the_database
+    song = Song.create(name: "Cruso", artist: "The Ex", genre: "Unk", intensity: 3, focusing: 0)
+    id = song.id
+    song.update(name: "Crusoe", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
+    updated_song = Song.find(id)
+    expected = ["Crusoe", "The Ex & Tom Cora", "Punk", 4, 1]
+    actual = [updated_song.name, updated_song.artist, updated_song.genre, updated_song.intensity, updated_song.focusing]
+    assert_equal expected, actual
+  end
+
+  def test_update_is_reflected_in_existing_instance
+    song = Song.create(name: "Cruso", artist: "The Ex", genre: "Unk", intensity: 3, focusing: 0)
+    song.update(name: "Crusoe", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
+    expected = ["Crusoe", "The Ex & Tom Cora", "Punk", 4, 1]
+    actual = [song.name, song.artist, song.genre, song.intensity, song.focusing]
+    assert_equal expected, actual
+  end
+
   def test_save_saves_songs
     song = Song.new(name: "Crusoe", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
     song_count_before_save = database.execute("select count(id) from songs")[0][0]
@@ -19,6 +45,17 @@ class TestSong < JuryTest
   def test_save_creates_an_id
     song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
     refute_nil song.id, "Song id shouldn't be nil"
+  end
+
+  def test_find_returns_nil_if_song_id_doesnt_exist
+    assert_nil Song.find(314159)
+  end
+
+  def test_find_returns_the_row_as_song_object
+    song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
+    found = Song.find(song.id)
+    assert_equal song.name, found.name
+    assert_equal song.id, found.id
   end
 
   def test_all_returns_all_songs_in_alphabetical_order

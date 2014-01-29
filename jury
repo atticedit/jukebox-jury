@@ -5,7 +5,7 @@ require_relative 'lib/parse_arguments'
 
 command = ARGV[0]
 options = ParseArguments.parse
-options[:name] = ARGV[1]
+options[:name] ||= ARGV[1]
 
 Environment.environment = options[:environment] || "production"
 database = Environment.database_connection
@@ -24,15 +24,15 @@ elsif command == "add"
   error_messages = ParseArguments.validate(options)
   if error_messages.empty?
 
-    # Should be rewritten to prevent SQL injection attack:
+    # Ideally rewritten to prevent SQL injection attack:
     values_string = "'#{options[:name]}',
                      '#{options[:artist]}',
                      '#{options[:genre]}',
-                     #{options[:intensity]},
-                     #{options[:focusing]}"
+                      #{options[:intensity]},
+                      #{options[:focusing]}"
     statement = "insert into songs(name, artist, genre, intensity, focusing) values(#{values_string})"
     database.execute(statement)
-    puts "A song by #{options[:artist]} was added, named \"#{options[:name]}\"."
+    puts "A song by #{options[:artist]} was added, named '#{options[:name]}'."
     puts "It's in the #{options[:genre]} genre, with intensity of #{options[:intensity]} and focusing value of #{options[:focusing]}."
   else
     puts error_messages
@@ -40,6 +40,14 @@ elsif command == "add"
 elsif command == "list"
   puts "Songs in the database:"
   puts Song.all
+elsif command == "edit"
+  if song = Song.find(options[:id])
+    song.update(options)
+    puts "Song #{song.id} by #{song.artist} is now named '#{song.name}'."
+    puts "It's in the #{song.genre} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}."
+  else
+    puts "Song #{options[:id]} couldn't be found."
+  end
 else
-    puts "Available commands are 'add', 'list,' and 'search.'"
+    puts "Available commands are 'add', 'edit', 'list', and 'search.'"
 end

@@ -20,7 +20,7 @@ class TestAddingSongs < JuryTest
 
   def test_valid_song_information_gets_printed
     command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --genre Punk --intensity 5 --focusing 0"
-    expected = "A song by Hüsker Dü was added, named \"Celebrated Summer\".\nIt\'s in the Punk genre, with intensity of 5 and focusing value of 0."
+    expected = "A song by Hüsker Dü was added, named 'Celebrated Summer'.\nIt's in the Punk genre, with intensity of 5 and focusing value of 0."
     assert_command_output expected, command
   end
 

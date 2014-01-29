@@ -3,9 +3,7 @@ class Song
   attr_reader :id
 
   def initialize attributes = {}
-    [:name, :artist, :genre, :intensity, :focusing].each do |attr|
-      self.send("#{attr}=", attributes[attr])
-    end
+    update_attributes(attributes)
   end
 
   def self.create(attributes = {})
@@ -14,11 +12,33 @@ class Song
     song
   end
 
+  def update(attributes = {})
+    update_attributes(attributes)
+    save
+  end
+
   def save
     database = Environment.database_connection
-    # Should be rewritten to prevent SQL injection attack:
-    database.execute("insert into songs(name, artist, genre, intensity, focusing) values('#{name}', '#{artist}', '#{genre}', #{intensity}, #{focusing})")
-    @id = database.last_insert_row_id
+    # Ideally rewritten to prevent SQL injection attack:
+    if id
+      database.execute("update songs set name = '#{name}', artist = '#{artist}', genre = '#{genre}', intensity = #{intensity}, focusing = #{focusing} where id = #{id}")
+    else
+      database.execute("insert into songs(name, artist, genre, intensity, focusing) values('#{name}', '#{artist}', '#{genre}', #{intensity}, #{focusing})")
+      @id = database.last_insert_row_id
+    end
+  end
+
+  def self.find id
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("select * from songs where id = #{id}")[0]
+    if results
+      song = Song.new(name: results["name"], artist: results["artist"], genre: results["genre"], intensity: results["intensity"], focusing: results["focusing"])
+      song.send("id=", results["id"])
+      song
+    else
+      nil
+    end
   end
 
   def self.all
@@ -40,5 +60,13 @@ class Song
 
   def id=(id)
     @id = id
+  end
+
+  def update_attributes(attributes)
+    [:name, :artist, :genre, :intensity, :focusing].each do |attr|
+      if attributes[attr]
+        self.send("#{attr}=", attributes[attr])
+      end
+    end
   end
 end

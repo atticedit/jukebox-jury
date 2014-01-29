@@ -6,6 +6,10 @@ class ParseArguments
     OptionParser.new do |opts|
       opts.banner = "Usage: jury [command] [options]"
 
+      opts.on("--name [NAME]", "The name of the song") do |name|
+        options[:name] = name
+      end
+
       opts.on("--artist [ARTIST]", "The artist performing the song") do |artist|
         options[:artist] = artist
       end
@@ -18,8 +22,12 @@ class ParseArguments
         options[:intensity] = intensity
       end
 
-      opts.on("--focusing [FOCUSING]", "The song\'s focusing value (true or false)") do |focusing|
+      opts.on("--focusing [FOCUSING]", "The song\'s focusing value (0 for false; 1 for true)") do |focusing|
         options[:focusing] = focusing
+      end
+
+      opts.on("--id [ID]", "The id of the song object") do |id|
+        options[:id] = id
       end
 
       opts.on("--environment [ENV]", "The database environment") do |env|
