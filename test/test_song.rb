@@ -67,7 +67,6 @@ class TestSong < JuryTest
   end
 
   def test_search_returns_appropriate_results
-    skip
     song1 = Song.create(name: "Pancake Lizard", artist: "Aphex Twin", genre: "Electronic", intensity: 3, focusing: 0)
     song2 = Song.create(name: "Cantus In Memory Of Benjamin Britten", artist: "Arvo Pärt", genre: "Classical", intensity: 4, focusing: 1)
     song3 = Song.create(name: "Yègellé Tezeta (My Own Memory)", artist: "Mulatu Astatke", genre: "Ethiopian Jazz", intensity: 4, focusing: 1)
@@ -96,5 +95,27 @@ class TestSong < JuryTest
   def test_all_returns_empty_array_if_no_songs
     results = Song.all
     assert_equal [], results
+  end
+
+  def test_equality_on_same_object
+    song = Song.create(name: "Tune Up", artist: "Chet Baker", genre: "Jazz", intensity: 4, focusing: 1)
+    assert song == song
+  end
+
+  def test_equality_with_different_class
+    song = Song.create(name: "Tune Up", artist: "Chet Baker", genre: "Jazz", intensity: 4, focusing: 1)
+    refute song == "Song"
+  end
+
+  def test_equality_with_different_song
+    song1 = Song.create(name: "Tune Up", artist: "Chet Baker", genre: "Jazz", intensity: 4, focusing: 1)
+    song2 = Song.create(name: "Out Of Body", artist: "Japanther", genre: "Punk", intensity: 4, focusing: 1)
+    refute song1 == song2
+  end
+
+  def test_equality_with_same_song_with_different_object_id
+    song1 = Song.create(name: "Tune Up", artist: "Chet Baker", genre: "Jazz", intensity: 4, focusing: 1)
+    song2 = Song.find(song1.id)
+    assert song1 == song2
   end
 end

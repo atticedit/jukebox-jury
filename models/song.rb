@@ -60,6 +60,10 @@ class Song
     "\'#{name}\' by #{artist}, #{genre}, intensity: #{intensity}, focusing value: #{focusing}, id: #{id}"
   end
 
+  def ==(other)
+    other.is_a?(Song) && self.to_s == other.to_s
+  end
+
   protected
 
   def id=(id)
