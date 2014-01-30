@@ -12,8 +12,8 @@ class TestSong < JuryTest
     song = Song.new(name: "Cruso", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
     song_count_before_update = database.execute("select count(id) from songs")[0][0]
     song.update(name: "Crusoe")
-    songs_count_after_update = database.execute("select count(id) from songs")[0][0]
-    assert_equal song_count_before_update + 1, songs_count_after_update
+    song_count_after_update = database.execute("select count(id) from songs")[0][0]
+    assert_equal song_count_before_update + 1, song_count_after_update
   end
 
   def test_update_saves_to_the_database

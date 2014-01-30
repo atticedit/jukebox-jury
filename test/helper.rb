@@ -12,6 +12,7 @@ class JuryTest < MiniTest::Unit::TestCase
 
   def teardown
     database.execute("delete from songs")
+    database.execute("delete from genres")
   end
 
   def assert_command_output expected, command

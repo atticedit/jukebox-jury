@@ -27,4 +27,5 @@ end
 
 def create_tables(database_connection)
   database_connection.execute("CREATE TABLE songs (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), artist varchar(50), genre varchar(50), intensity integer, focusing boolean)")
+  database_connection.execute("CREATE TABLE genres (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50))")
 end
