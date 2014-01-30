@@ -4,7 +4,7 @@ class Importer
   def self.import(from_filename)
     CSV.foreach(from_filename, headers: true) do |row_hash|
       import_song(row_hash)
-      Genre.create(row_hash["genre"])
+      Genre.find_or_create(row_hash["genre"])
     end
   end
 

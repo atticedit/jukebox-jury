@@ -17,11 +17,18 @@ class Genre
     end
   end
 
-  def self.create name
-    genre = Genre.new(name)
+  def self.find_or_create name
     database = Environment.database_connection
-    database.execute("insert into genres(name) values('#{genre.name}')")
-    genre.send("id=", database.last_insert_row_id)
+    database.results_as_hash = true
+    results = database.execute("select * from genres where name = '#{name}'")
+    genre = Genre.new(name)
+    if results.empty?
+      database.execute("insert into genres(name) values('#{genre.name}')")
+      genre.send("id=", database.last_insert_row_id)
+    else
+      row_hash = results[0]
+      genre.send("id=", row_hash["id"])
+    end
     genre
   end
 

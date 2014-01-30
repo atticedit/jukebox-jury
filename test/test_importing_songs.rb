@@ -29,9 +29,8 @@ class TestImportingSongs < JuryTest
   end
 
   def test_genres_are_created_as_needed
-    skip
-    Genre.create("Funk")
-    Genre.create("Jazz")
+    Genre.find_or_create("Funk")
+    Genre.find_or_create("Jazz")
     import_data
     assert_equal 4, Genre.all.count, "The genres are: #{Genre.all.map(&:name)}"
   end
