@@ -35,12 +35,20 @@ class TestEditingSongs < JuryTest
     assert_command_output expected, command
   end
 
-  def test_updating_with_partial_data
-    skip
+  def test_updating_only_song_name
     song = Song.new(name: "Cruso", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 4, focusing: 1)
     song.save
     id = song.id
     command = "./jury edit --id #{id} --name 'Crusoe'"
+    expected = "Song #{id} by The Ex & Tom Cora is now named 'Crusoe'.\nIt's in the Punk genre, with intensity of 4 and focusing value of 1."
+    assert_command_output expected, command
+  end
+
+  def test_updating_only_intensity
+    song = Song.new(name: "Crusoe", artist: "The Ex & Tom Cora", genre: "Punk", intensity: 1, focusing: 1)
+    song.save
+    id = song.id
+    command = "./jury edit --id #{id} --intensity 4"
     expected = "Song #{id} by The Ex & Tom Cora is now named 'Crusoe'.\nIt's in the Punk genre, with intensity of 4 and focusing value of 1."
     assert_command_output expected, command
   end
