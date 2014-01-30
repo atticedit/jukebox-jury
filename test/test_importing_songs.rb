@@ -24,7 +24,6 @@ class TestImportingSongs < JuryTest
   end
 
   def test_extra_genres_arent_created
-    skip
     import_data
     assert_equal 3, Genre.all.count
   end
@@ -34,13 +33,12 @@ class TestImportingSongs < JuryTest
     Genre.create("Funk")
     Genre.create("Jazz")
     import_data
-    assert_equal 4, Genre.all.count
+    assert_equal 4, Genre.all.count, "The genres are: #{Genre.all.map(&:name)}"
   end
 
   def test_data_isnt_duplicated
-    skip
     import_data
-    expected = ["Blues", "Indie Rock", "Funk"]
+    expected = ["Blues", "Funk", "Indie Rock"]
     assert_equal expected, Genre.all.map(&:name)
   end
 end
