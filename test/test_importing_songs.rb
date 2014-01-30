@@ -7,7 +7,6 @@ class TestImportingSongs < JuryTest
   end
 
   def test_the_correct_number_of_songs_are_imported
-    skip
     import_data
     assert_equal 3, Song.all.count
   end

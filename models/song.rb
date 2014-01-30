@@ -6,6 +6,14 @@ class Song
     update_attributes(attributes)
   end
 
+  def intensity=(intensity)
+    @intensity = intensity.to_i
+  end
+
+  def focusing=(focusing)
+    @focusing = focusing.to_i
+  end
+
   def self.create(attributes = {})
     song = Song.new(attributes)
     song.save
