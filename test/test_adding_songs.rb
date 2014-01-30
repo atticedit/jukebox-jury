@@ -4,6 +4,7 @@ class TestAddingSongs < JuryTest
 
   def test_valid_song_gets_saved
     `./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --genre Punk --intensity 5 --focusing 0 --environment test`
+    database.results_as_hash = false
     results = database.execute("select name, artist, genre, intensity, focusing from songs")
     expected = ["Celebrated Summer", "Hüsker Dü", "Punk", 5, 0]
     assert_equal expected, results[0]

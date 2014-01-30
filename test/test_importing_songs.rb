@@ -1,4 +1,5 @@
 require_relative 'helper'
+require_relative '../lib/importer'
 
 class TestImportingSongs < JuryTest
   def import_data
