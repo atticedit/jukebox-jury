@@ -1,6 +1,6 @@
 # Jukebox Jury ∿∿∿∿∿
 
-#### A command-line app for analyzing what songs are best for concentration
+#### A command-line app for analyzing what types of songs are best for concentration
 
 ## Elevator Pitch
 
@@ -9,9 +9,9 @@ I listen to music as much of my waking life as possible, which includes while I'
 ## Project Requirements
 
   * Simple feature set
-  * CRUD
+  * CRUD operations
   * Test-driven development
-  * A query or two that will reveal connections not otherwise seen
+  * A query that will reveal connections not otherwise seen
 
 ## Feature List
 
@@ -20,10 +20,9 @@ I listen to music as much of my waking life as possible, which includes while I'
     * Artist
     * Genre
     * Intensity (integer from 1 to 5 representing a point on the spectrum from tranquil to frenzied)
-    * Focusing (“true” if conducive to concentration)
-  * Print a list of the 20 artists most conducive to concentration
-  * Print a list of the 20 genres most conducive to concentration
-  * Print a report of the combinations of genre and intensity most conducive to concentration
+    * Focusing (1 if conducive to concentration and 0 if not)
+  * Import song data exported from iTunes
+  * Print a list of the combinations of genre and intensity with the most songs conducive to concentration
 
 ## Interesting Query
 

@@ -73,44 +73,6 @@ in order to have the best information for locating more songs I can concentrate 
 
 ---
 
-### Reporting on Artists
-
-As a music fanatic who also needs to get things done,
-I want to view a report on artists in my collection
-in order to see which are best to listen to while concentrating.
-
-##### Usage
-
-    ./jury stats --artist
-    ./jury stats -a
-
-##### Acceptance Criteria
-
-* Prints a report of artists sorted by how many of the artist's songs I marked as being good for concentration
-* Ignores artists that have no songs I can concentrate to
-* Limits printing to the 20 artists with the most songs I can concentrate to
-
----
-
-### Reporting on Genres
-
-As a music fanatic who also needs to get things done,
-I want to view a report on genres in my collection
-in order to see which are best to listen to while concentrating.
-
-##### Usage
-
-    ./jury stats --genre
-    ./jury stats -g
-
-##### Acceptance Criteria
-
-* Prints a report of genres sorted by the number of songs in the genre I marked as being good for concentration
-* Ignores genres that have no songs I can concentrate to
-* Limits printing to the 20 genres with the most songs I can concentrate to
-
----
-
 ### Reporting on Genre/Intensity Combinations
 
 As a music fanatic who also needs to get things done,
