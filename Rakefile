@@ -7,7 +7,7 @@ Rake::TestTask.new() do |t|
   t.pattern = "test/test_*.rb"
 end
 
-desc "Run tests"
+desc "run tests"
 task :default => :test
 
 desc 'create the production database setup'
@@ -26,6 +26,6 @@ task :test_prepare do
 end
 
 def create_tables(database_connection)
-  database_connection.execute("CREATE TABLE songs (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), artist varchar(50), genre varchar(50), intensity integer, focusing boolean)")
+  database_connection.execute("CREATE TABLE songs (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50), artist varchar(50), genre_id integer, intensity integer, focusing boolean)")
   database_connection.execute("CREATE TABLE genres (id INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50))")
 end

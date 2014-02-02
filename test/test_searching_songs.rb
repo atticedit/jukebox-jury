@@ -2,6 +2,7 @@ require_relative 'helper'
 
 class TestSearchingSongs < JuryTest
   def test_search_returns_relevant_results
+    skip
     `./jury add 'Pancake Lizard' --artist 'Aphex Twin' --genre Electronic --intensity 3 --focusing 0 --environment test`
     `./jury add 'Cantus In Memory Of Benjamin Britten' --artist 'Arvo Pärt' --genre Classical --intensity 4 --focusing 1 --environment test`
     `./jury add 'Yègellé Tezeta (My Own Memory)' --artist 'Mulatu Astatke' --genre Ethiopian Jazz --intensity 4 --focusing 1 --environment test`

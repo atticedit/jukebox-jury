@@ -20,10 +20,10 @@ class Genre
   def self.find_or_create name
     database = Environment.database_connection
     database.results_as_hash = true
-    results = database.execute("select * from genres where name = '#{name}'")
     genre = Genre.new(name)
+    results = database.execute("select * from genres where name = '#{genre.name}'")
     if results.empty?
-      database.execute("insert into genres(name) values('#{genre.name}')")
+      database.execute("insert into genres(name) values('#{name}')")
       genre.send("id=", database.last_insert_row_id)
     else
       row_hash = results[0]

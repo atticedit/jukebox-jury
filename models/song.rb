@@ -27,11 +27,16 @@ class Song
 
   def save
     database = Environment.database_connection
+    genre = Genre.find_or_create(genre)
+    genre_id = genre.id
     # Ideally rewritten to prevent SQL injection attack:
     if id
-      database.execute("update songs set name = '#{name}', artist = '#{artist}', genre = '#{genre}', intensity = #{intensity}, focusing = #{focusing} where id = #{id}")
+      database.execute("update songs set name = '#{name}', artist = '#{artist}', genre_id = #{genre_id}, intensity = #{intensity}, focusing = #{focusing} where id = #{id}")
     else
-      database.execute("insert into songs(name, artist, genre, intensity, focusing) values('#{name}', '#{artist}', '#{genre}', #{intensity}, #{focusing})")
+      save_sql = "insert into songs(name, artist, genre_id, intensity, focusing)
+                  values(?, ?, ?, ?, ?)"
+      sql_statement = database.prepare(save_sql)
+      sql_statement.execute(@name, @artist, genre.id, @intensity, @focusing)
       @id = database.last_insert_row_id
     end
   end
@@ -41,7 +46,7 @@ class Song
     database.results_as_hash = true
     results = database.execute("select * from songs where id = #{id}")[0]
     if results
-      song = Song.new(name: results["name"], artist: results["artist"], genre: results["genre"], intensity: results["intensity"], focusing: results["focusing"])
+      song = Song.new(name: results["name"], artist: results["artist"], intensity: results["intensity"], focusing: results["focusing"])
       song.send("id=", results["id"])
       song
     else
@@ -58,14 +63,21 @@ class Song
     database.results_as_hash = true
     results = database.execute("select songs.* from songs where name LIKE '%#{search_term}%' order by name ASC")
     results.map do |row_hash|
-      song = Song.new(name: row_hash["name"], artist: row_hash["artist"], genre: row_hash["genre"], intensity: row_hash["intensity"], focusing: row_hash["focusing"])
+      song = Song.new(
+             name: row_hash["name"],
+             artist: row_hash["artist"],
+             intensity: row_hash["intensity"],
+             focusing: row_hash["focusing"])
+      # temporary solution:
+      genre = Genre.all.find{|genre| genre.id == row_hash["genre_id"]}
+      song.genre = genre.name
       song.send("id=", row_hash["id"])
       song
     end
   end
 
   def to_s
-    "\'#{name}\' by #{artist}, #{genre}, intensity: #{intensity}, focusing value: #{focusing}, id: #{id}"
+    "\'#{name}\' by #{artist}, #{genre.name}, intensity: #{intensity}, focusing value: #{focusing}, id: #{id}"
   end
 
   def ==(other)
