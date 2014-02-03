@@ -27,9 +27,8 @@ class Song
 
   def save
     database = Environment.database_connection
-    genre = Genre.find_or_create(genre)
-    genre_id = genre.id
-    # Ideally rewritten to prevent SQL injection attack:
+    genre_id = genre.nil? ? "NULL" : genre.id
+    # Ideally this would be rewritten to prevent SQL injection attack:
     if id
       database.execute("update songs set name = '#{name}', artist = '#{artist}', genre_id = #{genre_id}, intensity = #{intensity}, focusing = #{focusing} where id = #{id}")
     else
