@@ -2,11 +2,14 @@ require_relative 'helper'
 require_relative '../models/song'
 
 class TestSong < JuryTest
+  def test_genre_defaults_to_unclassified
+    song = Song.new(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
+    assert_equal "Unclassified", song.genre.name
+  end
+
   def test_to_s_prints_details
-    skip
-    genre = Genre.find_or_create("Soul")
-    song = Song.new(name: "Mercy Mercy", artist: "Booker T. & The MGs", genre: genre.name, intensity: 4, focusing: 1)
-    expected = "\'Mercy Mercy\' by Booker T. & The MGs, Soul, intensity: 4, focusing value: 1, id: #{song.id}"
+    song = Song.new(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
+    expected = "\'Mercy Mercy\' by Booker T. & The MGs, Unclassified, intensity: 4, focusing value: 1, id: #{song.id}"
     assert_equal expected, song.to_s
   end
 
@@ -20,15 +23,12 @@ class TestSong < JuryTest
   end
 
   def test_update_saves_to_the_database
-    skip
-    genre = Genre.find_or_create("Unk")
-    song = Song.create(name: "Cruso", artist: "The Ex", genre: genre, intensity: 3, focusing: 0)
+    song = Song.create(name: "Cruso", artist: "The Ex", intensity: 3, focusing: 0)
     id = song.id
-    genre = Genre.find_or_create("Punk")
-    song.update(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
+    song.update(name: "Crusoe", artist: "The Ex & Tom Cora", intensity: 4, focusing: 1)
     updated_song = Song.find(id)
-    expected = ["Crusoe", "The Ex & Tom Cora", "Punk", 4, 1]
-    actual = [updated_song.name, updated_song.artist, updated_song.genre, updated_song.intensity, updated_song.focusing]
+    expected = ["Crusoe", "The Ex & Tom Cora", 4, 1]
+    actual = [updated_song.name, updated_song.artist, updated_song.intensity, updated_song.focusing]
     assert_equal expected, actual
   end
 
@@ -58,7 +58,6 @@ class TestSong < JuryTest
   end
 
   def test_save_saves_genre_id
-    skip
     genre = Genre.find_or_create("Punk")
     song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
     genre_id = database.execute("select genre_id from songs where id='#{song.id}'")[0][0]
@@ -66,7 +65,6 @@ class TestSong < JuryTest
   end
 
   def test_save_updates_genre_id
-    skip
     genre1 = Genre.find_or_create("Punk")
     genre2 = Genre.find_or_create("Jazz")
     song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre1, intensity: 4, focusing: 1)
@@ -100,7 +98,6 @@ class TestSong < JuryTest
   end
 
   def test_search_returns_appropriate_results
-    skip
     genre = Genre.find_or_create("Electronic")
     song1 = Song.create(name: "Pancake Lizard", artist: "Aphex Twin", genre: genre, intensity: 3, focusing: 0)
     genre = Genre.find_or_create("Classical")
@@ -160,7 +157,6 @@ class TestSong < JuryTest
   end
 
   def test_equality_with_same_song_with_different_object_id
-    skip
     genre = Genre.find_or_create("Jazz")
     song1 = Song.create(name: "Tune Up", artist: "Chet Baker", genre: genre, intensity: 4, focusing: 1)
     song2 = Song.find(song1.id)

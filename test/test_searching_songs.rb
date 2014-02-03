@@ -2,10 +2,12 @@ require_relative 'helper'
 
 class TestSearchingSongs < JuryTest
   def test_search_returns_relevant_results
-    skip
-    `./jury add 'Pancake Lizard' --artist 'Aphex Twin' --genre Electronic --intensity 3 --focusing 0 --environment test`
-    `./jury add 'Cantus In Memory Of Benjamin Britten' --artist 'Arvo Pärt' --genre Classical --intensity 4 --focusing 1 --environment test`
-    `./jury add 'Yègellé Tezeta (My Own Memory)' --artist 'Mulatu Astatke' --genre Ethiopian Jazz --intensity 4 --focusing 1 --environment test`
+    genre = Genre.find_or_create("Electronic")
+    Song.create(name: "Pancake Lizard", artist: "Aphex Twin", genre: genre, intensity: 3, focusing: 0)
+    genre = Genre.find_or_create("Classical")
+    Song.create(name: "Cantus In Memory Of Benjamin Britten", artist: "Arvo Pärt", genre: genre, intensity: 4, focusing: 1)
+    genre = Genre.find_or_create("Jazz")
+    Song.create(name: "Yègellé Tezeta (My Own Memory)", artist: "Mulatu Astatke", genre: genre, intensity: 4, focusing: 1)
 
     shell_output = ""
     IO.popen('./jury search --environment test', 'r+') do |pipe|
@@ -14,19 +16,5 @@ class TestSearchingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_in_output shell_output, "Cantus In Memory Of Benjamin Britten", "Yègellé Tezeta (My Own Memory)"
-  end
-
-  def test_search_doesnt_return_irrelevant_results
-    `./jury add 'Pancake Lizard' --artist 'Aphex Twin' --genre Electronic --intensity 3 --focusing 0 --environment test`
-    `./jury add 'Cantus In Memory Of Benjamin Britten' --artist 'Arvo Pärt' --genre Classical --intensity 4 --focusing 1 --environment test`
-    `./jury add 'Yègellé Tezeta (My Own Memory)' --artist 'Mulatu Astatke' --genre Ethiopian Jazz --intensity 4 --focusing 1 --environment test`
-
-    shell_output = ""
-    IO.popen('./jury search --environment test', 'r+') do |pipe|
-      pipe.puts("Memory")
-      pipe.close_write
-      shell_output = pipe.read
-    end
-    assert_not_in_output shell_output, "Pancake Lizard"
   end
 end

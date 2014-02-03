@@ -1,13 +1,51 @@
 require_relative 'helper'
 
 class TestAddingSongs < JuryTest
+  def test_user_is_presented_with_list_of_genres
+    gen1 = Genre.find_or_create("Jazz")
+    gen2 = Genre.find_or_create("Punk")
+    gen3 = Genre.find_or_create("Classical")
+    shell_output = ""
+    IO.popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0 --environment test", 'r+') do |pipe|
+      pipe.puts "2"
+      shell_output = pipe.read
+    end
+    assert_includes_in_order shell_output,
+      "Enter the number representing the song's genre:",
+      "1. Classical",
+      "2. Jazz",
+      "3. Punk"
+  end
+
+  def test_user_chooses_genre
+    gen1 = Genre.find_or_create("Jazz")
+    gen2 = Genre.find_or_create("Punk")
+    gen3 = Genre.find_or_create("Classical")
+    shell_output = ""
+    IO.popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0 --environment test", 'r+') do |pipe|
+      pipe.puts "3"
+      shell_output = pipe.read
+    end
+    expected = "A song by Hüsker Dü was added, named 'Celebrated Summer'. It's in the Punk genre, with intensity of 5 and focusing value of 0."
+    assert_in_output shell_output, expected
+  end
+
+  def test_user_skips_entering_genre
+    gen2 = Genre.find_or_create("Punk")
+    shell_output = ""
+    IO.popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0 --environment test", 'r+') do |pipe|
+      pipe.puts ""
+      shell_output = pipe.read
+    end
+    expected = "A song by Hüsker Dü was added, named 'Celebrated Summer'. It's in the Unclassified genre, with intensity of 5 and focusing value of 0."
+    assert_in_output shell_output, expected
+  end
 
   def test_valid_song_gets_saved
-    skip
-    `./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --genre Punk --intensity 5 --focusing 0 --environment test`
+    execute_popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0")
     database.results_as_hash = false
-    results = database.execute("select name, artist, genre_id, intensity, focusing from songs")
-    expected = ["Celebrated Summer", "Hüsker Dü", "Punk", 5, 0]
+    results = database.execute("select name, artist, intensity, focusing from songs")
+    expected = ["Celebrated Summer", "Hüsker Dü", 5, 0]
     assert_equal expected, results[0]
 
     result = database.execute("select count(id) from songs")
@@ -15,57 +53,38 @@ class TestAddingSongs < JuryTest
   end
 
   def test_invalid_song_doesnt_get_saved
-    `./jury add 'Celebrated Summer' --artist 'Hüsker Dü'`
+    execute_popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü'")
     result = database.execute("select count(id) from songs")
     assert_equal 0, result[0][0]
   end
 
-  def test_valid_song_information_gets_printed
-    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --genre Punk --intensity 5 --focusing 0"
-    expected = "A song by Hüsker Dü was added, named 'Celebrated Summer'.\nIt's in the Punk genre, with intensity of 5 and focusing value of 0."
-    assert_command_output expected, command
-  end
-
   def test_error_message_for_missing_song_name
     command = "./jury add"
-    expected = "You must provide the name of the song you\'re adding.\nYou must provide the artist and genre and intensity and focusing value of the song you\'re adding."
+    expected = "You must provide the name of the song you\'re adding. You must provide the artist and intensity and focusing value of the song you\'re adding."
     assert_command_output expected, command
   end
 
   def test_error_message_for_missing_artist
-    command = "./jury add 'Celebrated Summer' --genre Punk --intensity 5 --focusing 0"
+    command = "./jury add 'Celebrated Summer' --intensity 5 --focusing 0"
     expected = "You must provide the artist of the song you\'re adding."
     assert_command_output expected, command
   end
 
-  def test_error_message_for_missing_genre
-    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0"
-    expected = "You must provide the genre of the song you\'re adding."
-    assert_command_output expected, command
-  end
-
   def test_error_message_for_missing_intensity
-    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --genre Punk --focusing 0"
+    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --focusing 0"
     expected = "You must provide the intensity of the song you\'re adding."
     assert_command_output expected, command
   end
 
   def test_error_message_for_missing_focusing
-    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --genre Punk --intensity 5"
+    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5"
     expected = "You must provide the focusing value of the song you\'re adding."
     assert_command_output expected, command
   end
 
-  def test_error_message_for_missing_genre_and_focusing
-    command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5"
-    expected = "You must provide the genre and focusing value of the song you\'re adding."
-    assert_command_output expected, command
-  end
-
-  def test_error_message_for_missing_artist_and_genre_and_intensity_and_focusing
+  def test_error_message_for_missing_artist_and_intensity_and_focusing
     command = "./jury add 'Celebrated Summer'"
-    expected = "You must provide the artist and genre and intensity and focusing value of the song you\'re adding."
+    expected = "You must provide the artist and intensity and focusing value of the song you\'re adding."
     assert_command_output expected, command
   end
-
 end
