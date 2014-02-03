@@ -19,15 +19,7 @@ class Jury
       search_term = ask("Enter all or part of a song name to search for:")
       search_songs_for(search_term)
     elsif options[:command] == "add"
-      error_messages = ArgumentParser.validate(options)
-      if error_messages.empty?
-        song = Song.new(options)
-        song.save
-        puts "A song by #{options[:artist]} was added, named '#{options[:name]}'."
-        puts "It's in the #{options[:genre]} genre, with intensity of #{options[:intensity]} and focusing value of #{options[:focusing]}."
-      else
-        puts error_messages
-      end
+      add_song()
     elsif options[:command] == "list"
       list_songs()
     elsif options[:command] == "edit"
@@ -53,6 +45,31 @@ class Jury
     puts Song.search(search_term)
   end
 
+  def add_song
+    error_messages = ArgumentParser.validate(options)
+    options[:genre] = get_genre_from_user()
+    if error_messages.empty?
+      song = Song.new(options)
+      song.save
+      puts "A song by #{song.artist} was added, named '#{song.name}'. It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}."
+    else
+      puts error_messages.join(" ")
+    end
+  end
+
+  def get_genre_from_user
+    query = "Enter the number representing the song's genre:\n"
+    genres = Genre.all
+    genres.each_with_index do |genre, i|
+      query << "#{i+1}. #{genre.name}\n"
+    end
+    genre_number = ask(query)
+    if genre_number.empty?
+      Genre.default
+    else
+      genres[genre_number.to_i - 1]
+    end
+  end
 end
 
 jury = Jury.new()
