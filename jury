@@ -25,8 +25,7 @@ class Jury
     elsif options[:command] == "edit"
       if song = Song.find(options[:id])
         song.update(options)
-        puts "Song #{song.id} by #{song.artist} is now named '#{song.name}'."
-        puts "It's in the #{song.genre} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}."
+        puts "Song #{song.id} by #{song.artist} is now named '#{song.name}'. It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}."
       else
         puts "Song #{options[:id]} couldn't be found."
       end

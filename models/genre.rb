@@ -2,6 +2,10 @@ class Genre
   attr_accessor :name
   attr_reader :id
 
+  def self.default
+    @@default ||= Genre.find_or_create("Unclassified")
+  end
+
   def initialize(name)
     self.name = name
   end

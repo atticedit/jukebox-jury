@@ -4,6 +4,7 @@ class Song
 
   def initialize attributes = {}
     update_attributes(attributes)
+    self.genre ||= Genre.default
   end
 
   def intensity=(intensity)
@@ -46,6 +47,8 @@ class Song
     results = database.execute("select * from songs where id = #{id}")[0]
     if results
       song = Song.new(name: results["name"], artist: results["artist"], intensity: results["intensity"], focusing: results["focusing"])
+      genre = Genre.all.find{|genre| genre.id == results["genre_id"]}
+      song.genre = genre
       song.send("id=", results["id"])
       song
     else
@@ -67,9 +70,8 @@ class Song
              artist: row_hash["artist"],
              intensity: row_hash["intensity"],
              focusing: row_hash["focusing"])
-      # temporary solution:
       genre = Genre.all.find{|genre| genre.id == row_hash["genre_id"]}
-      song.genre = genre.name
+      song.genre = genre
       song.send("id=", row_hash["id"])
       song
     end
