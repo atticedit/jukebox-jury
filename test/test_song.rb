@@ -3,23 +3,23 @@ require_relative '../models/song'
 
 class TestSong < JuryTest
   def test_genre_defaults_to_unclassified
-    song = Song.new(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
+    song = Song.create(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
     assert_equal "Unclassified", song.genre.name
   end
 
   def test_to_s_prints_details
-    song = Song.new(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
+    song = Song.create(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
     expected = "\'Mercy Mercy\' by Booker T. & The MGs, Unclassified, intensity: 4, focusing value: 1, id: #{song.id}"
     assert_equal expected, song.to_s
   end
 
   def test_update_doesnt_insert_new_row
     genre = Genre.find_or_create("Punk")
-    song = Song.new(name: "Cruso", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
+    song = Song.create(name: "Cruso", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
     song_count_before_update = database.execute("select count(id) from songs")[0][0]
     song.update(name: "Crusoe")
     song_count_after_update = database.execute("select count(id) from songs")[0][0]
-    assert_equal song_count_before_update + 1, song_count_after_update
+    assert_equal song_count_before_update, song_count_after_update
   end
 
   def test_update_saves_to_the_database
