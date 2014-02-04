@@ -11,7 +11,7 @@ class TestAddingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "Enter the number representing the song's genre:",
+      "Enter the number representing the song's genre, and hit return:",
       "1. Classical",
       "2. Jazz",
       "3. Punk"

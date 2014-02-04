@@ -57,7 +57,7 @@ class Jury
   end
 
   def get_genre_from_user
-    query = "Enter the number representing the song's genre:\n"
+    query = "Enter the number representing the song's genre, and hit return:\n"
     genres = Genre.all
     genres.each_with_index do |genre, i|
       query << "#{i+1}. #{genre.name}\n"
