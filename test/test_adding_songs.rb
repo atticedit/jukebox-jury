@@ -26,7 +26,7 @@ class TestAddingSongs < JuryTest
       pipe.puts "3"
       shell_output = pipe.read
     end
-    expected = "A song by Hüsker Dü was added, named 'Celebrated Summer'. It's in the Punk genre, with intensity of 5 and focusing value of 0."
+    expected = "I added a song by Hüsker Dü named 'Celebrated Summer'. It's in the Punk genre, with intensity of 5 and focusing value of 0."
     assert_in_output shell_output, expected
   end
 
@@ -37,7 +37,7 @@ class TestAddingSongs < JuryTest
       pipe.puts ""
       shell_output = pipe.read
     end
-    expected = "A song by Hüsker Dü was added, named 'Celebrated Summer'. It's in the Unclassified genre, with intensity of 5 and focusing value of 0."
+    expected = "I added a song by Hüsker Dü named 'Celebrated Summer'. It's in the Unclassified genre, with intensity of 5 and focusing value of 0."
     assert_in_output shell_output, expected
   end
 
@@ -60,31 +60,31 @@ class TestAddingSongs < JuryTest
 
   def test_error_message_for_missing_song_name
     command = "./jury add"
-    expected = "You must provide the name of the song you\'re adding. You must provide the artist and intensity and focusing value of the song you\'re adding."
+    expected = "I\'ll need the name of the song you\'re adding. I\'ll need the artist and intensity and focusing value of the song you\'re adding."
     assert_command_output expected, command
   end
 
   def test_error_message_for_missing_artist
     command = "./jury add 'Celebrated Summer' --intensity 5 --focusing 0"
-    expected = "You must provide the artist of the song you\'re adding."
+    expected = "I\'ll need the artist of the song you\'re adding."
     assert_command_output expected, command
   end
 
   def test_error_message_for_missing_intensity
     command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --focusing 0"
-    expected = "You must provide the intensity of the song you\'re adding."
+    expected = "I\'ll need the intensity of the song you\'re adding."
     assert_command_output expected, command
   end
 
   def test_error_message_for_missing_focusing
     command = "./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5"
-    expected = "You must provide the focusing value of the song you\'re adding."
+    expected = "I\'ll need the focusing value of the song you\'re adding."
     assert_command_output expected, command
   end
 
   def test_error_message_for_missing_artist_and_intensity_and_focusing
     command = "./jury add 'Celebrated Summer'"
-    expected = "You must provide the artist and intensity and focusing value of the song you\'re adding."
+    expected = "I\'ll need the artist and intensity and focusing value of the song you\'re adding."
     assert_command_output expected, command
   end
 end

@@ -10,7 +10,7 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "The database includes a song named 'Crusoe' by The Ex & Tom Cora."
+      "I\'ve found a song named 'Crusoe' by The Ex & Tom Cora."
       "It's in the Punk genre, with intensity of 4 and focusing value of 1."
       "Are you sure you want to delete 'Crusoe'?"
       "Enter 'Y' for yes or 'N' for no, then hit return."
@@ -25,7 +25,7 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "'Crusoe' was deleted from the database."
+      "I\'ve deleted Crusoe' from the database."
   end
 
   def test_user_declines_deletion
@@ -37,7 +37,7 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "'Crusoe' was not deleted, and remains in the database."
+      "'Crusoe' wasn\'t deleted, and remains in the database."
   end
 
   def test_user_enters_bad_input_for_deletion_verification
@@ -49,7 +49,7 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "Available options are 'Y' or 'N'. 'Crusoe' was not deleted, and remains in the database."
+      "Your available options are 'Y' or 'N'. 'Crusoe' wasn\'t deleted, and remains in the database."
   end
 
   def test_delete_deletes_row
@@ -97,7 +97,7 @@ class TestDeletingSongs < JuryTest
 
   def test_error_message_for_missing_song_to_delete
     command = "./jury delete"
-    expected = "You must provide the name of the song you want to delete. Try your command again."
+    expected = "I\'ll need the name of the song you want to delete. Try your command again."
     assert_command_output expected, command
   end
 
