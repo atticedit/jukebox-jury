@@ -102,7 +102,6 @@ class TestDeletingSongs < JuryTest
   end
 
   def test_error_message_when_song_to_delete_isnt_found
-    # skip # fails
     genre = Genre.find_or_create("Punk")
     song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
     shell_output = ""

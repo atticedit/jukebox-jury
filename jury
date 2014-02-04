@@ -16,7 +16,7 @@ class Jury
   def main
     database = Environment.database_connection
     if options[:command] == "search"
-      search_term = ask("Enter all or part of a song name to search for, then hit return:")
+      search_term = ask("\nEnter all or part of a song name to search for, then hit return:\n\n")
       search_songs_for(search_term)
     elsif options[:command] == "add"
       add_song()
@@ -31,19 +31,23 @@ class Jury
       end
     elsif options[:command] == "delete"
       delete_song()
+    elsif options[:command] == "report"
+      print_report()
     else
       puts "Available commands are 'add', 'edit', 'list', and 'search.' Try your command again."
     end
   end
 
   def list_songs()
-    puts "Songs in the database:"
+    puts "\nSongs in the database:\n\n"
     puts Song.all
+    puts
   end
 
   def search_songs_for(search_term)
-    puts "Searching for: #{search_term}"
+    puts "\n                     Searching for: #{search_term}\n\n"
     puts Song.search(search_term)
+    puts
   end
 
   def add_song
@@ -52,14 +56,14 @@ class Jury
     if error_messages.empty?
       song = Song.new(options)
       song.save
-      puts "A song by #{song.artist} was added, named '#{song.name}'. It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}."
+      puts "\nA song by #{song.artist} was added, named '#{song.name}'. It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}.\n\n"
     else
       puts error_messages.join(" ")
     end
   end
 
   def get_genre_from_user
-    query = "Enter the number representing the song's genre, and hit return:\n"
+    query = "\nEnter the number representing the song's genre, and hit return:\n\n"
     genres = Genre.all
     genres.each_with_index do |genre, i|
       query << "#{i+1}. #{genre.name}\n"
@@ -75,28 +79,66 @@ class Jury
   def delete_song
     database = Environment.database_connection
     if options[:name].nil? or options[:name].empty?
-      puts "You must provide the name of the song you want to delete. Try your command again."
+      puts "\nYou must provide the name of the song you want to delete. Try your command again.\n\n"
     else
       name = options[:name]
       song = Song.search(options[:name])[0]
       if song.nil?
-        puts "'#{name}' was not found in the database."
+        puts "\n'#{name}' was not found in the database.\n\n"
         exit
       end
-      query = "The database includes a song named '#{song.name}' by #{song.artist}.\n" +
-              "It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}.\n" +
-              "Are you sure you want to delete '#{song.name}'?\n" +
-              "Enter 'Y' for yes or 'N' for no, then hit return."
+      query =
+      "\nThe database includes a song named '#{song.name}' by #{song.artist}.\n" +
+      "It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}.\n\n" +
+      "Are you sure you want to delete '#{song.name}'?\n" +
+      "Enter 'Y' for yes or 'N' for no, then hit return.\n\n"
       verification = ask(query).downcase
       if verification == "y"
         database.execute("delete from songs where id = #{song.id}")
-        puts "'#{song.name}' was deleted from the database."
+        puts "\n'#{song.name}' was deleted from the database.\n\n"
       elsif verification == "n"
-        puts "'#{song.name}' was not deleted, and remains in the database."
+        puts "\n'#{song.name}' was not deleted, and remains in the database.\n\n"
       else
-        puts "Available options are 'Y' or 'N'. '#{song.name}' was not deleted, and remains in the database."
+        puts "\nAvailable options are 'Y' or 'N'. '#{song.name}' was not deleted, and remains in the database.\n\n"
       end
     end
+  end
+
+  def print_report
+    message =
+    "\nI can analyze the types of songs you marked as best for concentration.\n" +
+    "My report will show the combinations of genre and intensity you concentrate to best.\n\n"
+    puts message
+    sleep 1
+    query =
+    "Before I start, do you have any guesses?\n" +
+    "Enter 'Y' for yes or 'N' for no, then hit return.\n\n"
+    response = ask(query).downcase
+    if response == "y"
+      guess = ask("\nWhat do you think is your best combination of genre and intensity for concentration?\n\n")
+      puts "\nThat's an interesting guess. Let's see if you're right.\n\n"
+    elsif response == "n"
+      puts "\nIn that case, I'll just tell you.\n\n"
+    else
+      puts "\nSince the available options are 'Y' or 'N', I'll take that as a no.\n\nIn that case, I'll just tell you.\n\n"
+    end
+    sleep 1
+    puts "                     [dramatic pause]"
+    sleep 2
+    puts "\n\nYou concentrate best to these types of music:\n\n"
+    database = Environment.database_connection
+    database.results_as_hash = true
+    results = database.execute("SELECT genres.name, intensity, count(*) AS num_rows FROM songs INNER JOIN genres ON songs.genre_id = genres.id WHERE focusing = 1 GROUP BY genre_id, intensity ORDER BY num_rows DESC LIMIT 7")
+    results.map do |row_hash|
+      name = row_hash["name"]
+      intensity = row_hash["intensity"]
+      num_rows = row_hash["num_rows"]
+      message =
+      "    #{name} with an intensity level of #{intensity}    -----    you currently have #{num_rows} of this combination\n\n"
+      puts message
+      sleep 0.3
+    end
+    puts
   end
 end
 

@@ -81,9 +81,7 @@ in order to see what combinations of genres and intensity levels allow me to con
 
 ##### Usage
 
-    ./jury stats --overview
-    ./jury stats -o
-
+    ./jury report
 
 ##### Acceptance Criteria
 

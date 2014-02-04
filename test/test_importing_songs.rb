@@ -3,7 +3,7 @@ require_relative '../lib/importer'
 
 class TestImportingSongs < JuryTest
   def import_data
-    Importer.import("test/sample_song_data.csv")
+    Importer.import("test/sample_song_data_1.csv")
   end
 
   def test_the_correct_number_of_songs_are_imported
