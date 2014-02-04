@@ -8,17 +8,17 @@ in order to keep track of which ones keep me focused.
 
 ##### Usage
 
-    ./jury add "Celebrated Summer"
+    ./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0
 
 ##### Acceptance Criteria
 
-* If the song is already in the database, asks if I want to update the existing record instead
-* Gives me one prompt at a time for the song's Artist, Genre, Intensity, & Focusing attributes
+* Lists all available genres and prompts me to make a selection
+* If I make a selection, lists the information I entered for the song, including genre
 * Saves all the information I've given for the song
 
 ---
 
-### Updating a Record
+### Editing a Record
 
 As a music fanatic who also needs to get things done,
 I want to update information about songs when I have changes
@@ -26,12 +26,11 @@ in order to keep things up to date.
 
 ##### Usage
 
-    ./jury update "Pancake Lizard"
+    ./jury edit --name 'Crusoe' --artist 'The Ex & Tom Cora' --intensity 4 --focusing 1
 
 ##### Acceptance Criteria
 
 * If no song by that name is in the database, asks if I want to create a record instead
-* Shows me each attribute stored for the song on its own numbered line and asks me which line I want to update
 * Retains all the information I've declined to update
 * Saves all the new information I've given for the song
 
@@ -45,12 +44,12 @@ in order to keep the information relevant.
 
 ##### Usage
 
-    ./jury delete "Airport Surroundings"
+    ./jury delete "Buddy Ebsen Loves The Night Time"
 
 ##### Acceptance Criteria
 
 * If no song by that name is in the database, gives an error
-* Asks me to verify that I want to delete
+* If the song is found, lists the information on the song and asks me to verify that I want to delete
 * If I verify, deletes the record for the song
 
 ---
@@ -63,13 +62,11 @@ in order to have the best information for locating more songs I can concentrate 
 
 ##### Usage
 
-    ./jury import songs.xml
+    rake import_data
 
 ##### Acceptance Criteria
 
-* Asks me to verify that I want to import the file
-* If I verify, adds the data from the imported file to my database
-* Prints a summary of the records saved to the database
+* Adds the data from the imported file to my database
 
 ---
 
@@ -86,4 +83,4 @@ in order to see what combinations of genres and intensity levels allow me to con
 ##### Acceptance Criteria
 
 * Prints a report of combinations of genres and intensities, sorted by the number of songs with that combination I marked as being good for concentration
-* Ignores genre/intensity level combinations that have no songs I can concentrate to
+* Limits to the 7 combinations of genre and intensity I'm best able to concentrate to

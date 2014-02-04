@@ -121,9 +121,9 @@ class Jury
     else
       puts "\nSince the available options are 'Y' or 'N', I'll take that as a no.\n\nIn that case, I'll just tell you.\n\n"
     end
-    # sleep 1
+    sleep 1
     puts "                     [dramatic pause]"
-    # sleep 2
+    sleep 2
     puts "\n\nYou concentrate best to these types of music:\n\n"
     database = Environment.database_connection
     database.results_as_hash = true
