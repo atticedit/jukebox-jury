@@ -16,7 +16,7 @@ class Jury
   def main
     database = Environment.database_connection
     if options[:command] == "search"
-      search_term = ask("Enter all or part of a song name to search for:")
+      search_term = ask("Enter all or part of a song name to search for, then hit return:")
       search_songs_for(search_term)
     elsif options[:command] == "add"
       add_song()
@@ -29,8 +29,10 @@ class Jury
       else
         puts "Song #{options[:id]} couldn't be found."
       end
+    elsif options[:command] == "delete"
+      delete_song()
     else
-      puts "Available commands are 'add', 'edit', 'list', and 'search.'"
+      puts "Available commands are 'add', 'edit', 'list', and 'search.' Try your command again."
     end
   end
 
@@ -67,6 +69,33 @@ class Jury
       Genre.default
     else
       genres[genre_number.to_i - 1]
+    end
+  end
+
+  def delete_song
+    database = Environment.database_connection
+    if options[:name].nil? or options[:name].empty?
+      puts "You must provide the name of the song you want to delete. Try your command again."
+    else
+      name = options[:name]
+      song = Song.search(options[:name])[0]
+      if song.nil?
+        puts "'#{name}' was not found in the database."
+        exit
+      end
+      query = "The database includes a song named '#{song.name}' by #{song.artist}.\n" +
+              "It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}.\n" +
+              "Are you sure you want to delete '#{song.name}'?\n" +
+              "Enter 'Y' for yes or 'N' for no, then hit return."
+      verification = ask(query).downcase
+      if verification == "y"
+        database.execute("delete from songs where id = #{song.id}")
+        puts "'#{song.name}' was deleted from the database."
+      elsif verification == "n"
+        puts "'#{song.name}' was not deleted, and remains in the database."
+      else
+        puts "Available options are 'Y' or 'N'. '#{song.name}' was not deleted, and remains in the database."
+      end
     end
   end
 end
