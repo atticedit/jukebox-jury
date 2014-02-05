@@ -1,5 +1,4 @@
 require_relative 'helper'
-require_relative '../models/song'
 
 class TestSong < JuryTest
   def test_genre_defaults_to_unclassified

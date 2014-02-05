@@ -1,5 +1,4 @@
 require_relative 'helper'
-require_relative '../models/genre'
 
 class TestGenre < JuryTest
   def test_genres_are_created_if_they_dont_exist
