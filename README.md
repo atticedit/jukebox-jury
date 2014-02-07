@@ -30,4 +30,4 @@ Which combinations of Genre and Intensity are good to listen to while coding?
 
 ## Data Source
 
-An XML file of playlist data from iTunes comprised of tracks (excluding spoken word tracks and other non-songs) that have values entered for Name, Artist, Genre, Intensity, and Focusing.
+I wrote a script that looks in iTunes for tracks with values entered for all five of these attributes: Name, Artist, Genre, Intensity, and Focusing. It exports those values to a CSV file with one row per song.
