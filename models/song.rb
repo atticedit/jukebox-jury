@@ -34,9 +34,14 @@ class Song
   def save
     database = Environment.database_connection
     genre_id = genre.nil? ? "NULL" : genre.id
-    # Ideally this would be rewritten to prevent SQL injection attack:
     if id
-      database.execute("update songs set name = '#{name}', artist = '#{artist}', genre_id = #{genre_id}, intensity = #{intensity}, focusing = #{focusing} where id = #{id}")
+      database.execute("update songs set
+                        name = '#{name}',
+                        artist = '#{artist}',
+                        genre_id = #{genre_id},
+                        intensity = #{intensity},
+                        focusing = #{focusing}
+                        where id = #{id}")
     else
       save_sql = "insert into songs(name, artist, genre_id, intensity, focusing)
                   values(?, ?, ?, ?, ?)"
@@ -51,9 +56,13 @@ class Song
     database.results_as_hash = true
     results = database.execute("select * from songs where id = #{id}")[0]
     if results
-      song = Song.new(name: results["name"], artist: results["artist"], intensity: results["intensity"], focusing: results["focusing"])
-      genre = Genre.all.find{|genre| genre.id == results["genre_id"]}
-      song.genre = genre
+      genre = Genre.all.find{ |genre| genre.id == results["genre_id"] }
+      song = Song.new(
+             name: results["name"],
+             artist: results["artist"],
+             genre: genre,
+             intensity: results["intensity"],
+             focusing: results["focusing"])
       song.send("id=", results["id"])
       song
     else
@@ -68,15 +77,18 @@ class Song
   def self.search(search_term = nil)
     database = Environment.database_connection
     database.results_as_hash = true
-    results = database.execute("select songs.* from songs where name LIKE '%#{search_term}%' order by name ASC")
+    results = database.execute("select songs.*
+                                from songs
+                                where name LIKE '%#{search_term}%'
+                                order by name ASC")
     results.map do |row_hash|
+      genre = Genre.all.find{ |genre| genre.id == row_hash["genre_id"] }
       song = Song.new(
              name: row_hash["name"],
              artist: row_hash["artist"],
+             genre: genre,
              intensity: row_hash["intensity"],
              focusing: row_hash["focusing"])
-      genre = Genre.all.find{|genre| genre.id == row_hash["genre_id"]}
-      song.genre = genre
       song.send("id=", row_hash["id"])
       song
     end

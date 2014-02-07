@@ -70,7 +70,7 @@ class TestSong < JuryTest
   def test_save_saves_genre_id
     genre = Genre.find_or_create("Punk")
     song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
-    genre_id = database.execute("select genre_id from songs where id='#{song.id}'")[0][0]
+    genre_id = Song.find(song.id).genre.id
     assert_equal genre.id, genre_id, "Genre.id and song.genre_id should be the same"
   end
 
@@ -80,7 +80,7 @@ class TestSong < JuryTest
     song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre1, intensity: 4, focusing: 1)
     song.genre = genre2
     song.save
-    genre_id = database.execute("select genre_id from songs where id='#{song.id}'")[0][0]
+    genre_id = Song.find(song.id).genre.id
     assert_equal genre2.id, genre_id, "Genre2.id and song.genre_id should be the same"
   end
 
@@ -94,6 +94,17 @@ class TestSong < JuryTest
     found = Song.find(song.id)
     assert_equal song.name, found.name
     assert_equal song.id, found.id
+    assert_equal song.artist, found.artist
+    assert_equal song.intensity, found.intensity
+    assert_equal song.focusing, found.focusing
+  end
+
+  def test_find_returns_the_song_with_correct_genre
+    genre = Genre.find_or_create("Punk")
+    song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
+    found = Song.find(song.id)
+    refute_equal Genre.default.id, found.genre.id
+    assert_equal genre.id, found.genre.id
   end
 
   def test_search_returns_song_objects

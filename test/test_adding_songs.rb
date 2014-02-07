@@ -43,10 +43,10 @@ class TestAddingSongs < JuryTest
 
   def test_valid_song_gets_saved
     execute_popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0")
-    database.results_as_hash = false
-    results = database.execute("select name, artist, intensity, focusing from songs")
+    song = Song.all.first
     expected = ["Celebrated Summer", "Hüsker Dü", 5, 0]
-    assert_equal expected, results[0]
+    actual = [song.name, song.artist, song.intensity, song.focusing]
+    assert_equal expected, actual
     assert_equal 1, Song.count
   end
 
