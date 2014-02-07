@@ -10,6 +10,15 @@ class Genre
     self.name = name
   end
 
+  def name=(name)
+    @name = name.strip
+  end
+
+  def self.count
+    database = Environment.database_connection
+    database.execute("select count(id) from genres")[0][0]
+  end
+
   def self.all
     database = Environment.database_connection
     database.results_as_hash = true

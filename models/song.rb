@@ -15,6 +15,11 @@ class Song
     @focusing = focusing.to_i
   end
 
+  def self.count
+    database = Environment.database_connection
+    database.execute("select count(id) from songs")[0][0]
+  end
+
   def self.create(attributes = {})
     song = Song.new(attributes)
     song.save

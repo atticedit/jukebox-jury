@@ -47,15 +47,12 @@ class TestAddingSongs < JuryTest
     results = database.execute("select name, artist, intensity, focusing from songs")
     expected = ["Celebrated Summer", "Hüsker Dü", 5, 0]
     assert_equal expected, results[0]
-
-    result = database.execute("select count(id) from songs")
-    assert_equal 1, result[0][0]
+    assert_equal 1, Song.count
   end
 
   def test_invalid_song_doesnt_get_saved
     execute_popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü'")
-    result = database.execute("select count(id) from songs")
-    assert_equal 0, result[0][0]
+    assert_equal 0, Song.count
   end
 
   def test_error_message_for_missing_song_name

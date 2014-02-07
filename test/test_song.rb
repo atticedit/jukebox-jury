@@ -1,6 +1,17 @@
 require_relative 'helper'
 
 class TestSong < JuryTest
+  def test_count_when_no_songs
+    assert_equal 0, Song.count
+  end
+
+  def test_count_of_multiple_songs
+    Song.create(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
+    Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", intensity: 4, focusing: 1)
+    Song.create(name: "Pancake Lizard", artist: "Aphex Twin", intensity: 3, focusing: 0)
+    assert_equal 3, Song.count
+  end
+
   def test_genre_defaults_to_unclassified
     song = Song.create(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
     assert_equal "Unclassified", song.genre.name
@@ -15,9 +26,9 @@ class TestSong < JuryTest
   def test_update_doesnt_insert_new_row
     genre = Genre.find_or_create("Punk")
     song = Song.create(name: "Cruso", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
-    song_count_before_update = database.execute("select count(id) from songs")[0][0]
+    song_count_before_update = Song.count
     song.update(name: "Crusoe")
-    song_count_after_update = database.execute("select count(id) from songs")[0][0]
+    song_count_after_update = Song.count
     assert_equal song_count_before_update, song_count_after_update
   end
 
@@ -44,9 +55,9 @@ class TestSong < JuryTest
   def test_save_saves_songs
     genre = Genre.find_or_create("Punk")
     song = Song.new(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
-    song_count_before_save = database.execute("select count(id) from songs")[0][0]
+    song_count_before_save = Song.count
     song.save
-    songs_count_after_save = database.execute("select count(id) from songs")[0][0]
+    songs_count_after_save = Song.count
     assert_equal song_count_before_save + 1, songs_count_after_save
   end
 
