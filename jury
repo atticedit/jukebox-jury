@@ -15,23 +15,19 @@ class Jury
 
   def main
     database = Environment.database_connection
-    if options[:command] == "search"
+    case options[:command]
+    when "search"
       search_term = ask("\nEnter all or part of a song name to search for, then hit return:\n\n")
       search_songs_for(search_term)
-    elsif options[:command] == "add"
+    when "add"
       add_song()
-    elsif options[:command] == "list"
+    when "list"
       list_songs()
-    elsif options[:command] == "edit"
-      if song = Song.find(options[:id])
-        song.update(options)
-        puts "\nSong #{song.id} by #{song.artist} is now named '#{song.name}'. It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}.\n\n"
-      else
-        puts "\nSong #{options[:id]} couldn't be found.\n\n"
-      end
-    elsif options[:command] == "delete"
+    when "edit"
+      edit_song()
+    when "delete"
       delete_song()
-    elsif options[:command] == "report"
+    when "report"
       print_report()
     else
       puts "\nAvailable commands are 'add', 'edit', 'list', and 'search.' Try your command again.\n\n"
@@ -42,6 +38,15 @@ class Jury
     puts "\nSongs in the database:\n\n"
     puts Song.all
     puts
+  end
+
+  def edit_song()
+    if song = Song.find(options[:id])
+      song.update(options)
+      puts "\nSong #{song.id} by #{song.artist} is now named '#{song.name}'. It's in the #{song.genre.name} genre, with intensity of #{song.intensity} and focusing value of #{song.focusing}.\n\n"
+    else
+      puts "\nSong #{options[:id]} couldn't be found.\n\n"
+    end
   end
 
   def search_songs_for(search_term)
