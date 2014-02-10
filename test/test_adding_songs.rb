@@ -2,9 +2,9 @@ require_relative 'helper'
 
 class TestAddingSongs < JuryTest
   def test_user_is_presented_with_list_of_genres
-    gen1 = Genre.find_or_create("Jazz")
-    gen2 = Genre.find_or_create("Punk")
-    gen3 = Genre.find_or_create("Classical")
+    gen1 = Genre.find_or_create_by(name: "Jazz")
+    gen2 = Genre.find_or_create_by(name: "Punk")
+    gen3 = Genre.find_or_create_by(name: "Classical")
     shell_output = ""
     IO.popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0 --environment test", 'r+') do |pipe|
       pipe.puts "2"
@@ -18,9 +18,9 @@ class TestAddingSongs < JuryTest
   end
 
   def test_user_chooses_genre
-    gen1 = Genre.find_or_create("Jazz")
-    gen2 = Genre.find_or_create("Punk")
-    gen3 = Genre.find_or_create("Classical")
+    gen1 = Genre.find_or_create_by(name: "Jazz")
+    gen2 = Genre.find_or_create_by(name: "Punk")
+    gen3 = Genre.find_or_create_by(name: "Classical")
     shell_output = ""
     IO.popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0 --environment test", 'r+') do |pipe|
       pipe.puts "3"
@@ -28,11 +28,11 @@ class TestAddingSongs < JuryTest
     end
     assert_includes_in_order shell_output,
       "I added a song by Hüsker Dü named \"Celebrated Summer\".",
-      "It's punk with an intensity of 5 and a focusing value of 0."
+      "It's punk with an intensity of 5 and a focusing value of false."
   end
 
   def test_user_skips_entering_genre
-    gen2 = Genre.find_or_create("Punk")
+    gen2 = Genre.find_or_create_by(name: "Punk")
     shell_output = ""
     IO.popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0 --environment test", 'r+') do |pipe|
       pipe.puts ""
@@ -40,13 +40,13 @@ class TestAddingSongs < JuryTest
     end
     assert_includes_in_order shell_output,
       "I added a song by Hüsker Dü named \"Celebrated Summer\".",
-      "It's unclassified with an intensity of 5 and a focusing value of 0."
+      "It's unclassified with an intensity of 5 and a focusing value of false."
   end
 
   def test_valid_song_gets_saved
     execute_popen("./jury add 'Celebrated Summer' --artist 'Hüsker Dü' --intensity 5 --focusing 0")
     song = Song.all.first
-    expected = ["Celebrated Summer", "Hüsker Dü", 5, 0]
+    expected = ["Celebrated Summer", "Hüsker Dü", 5, false]
     actual = [song.name, song.artist, song.intensity, song.focusing]
     assert_equal expected, actual
     assert_equal 1, Song.count

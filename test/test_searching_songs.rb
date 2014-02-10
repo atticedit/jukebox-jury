@@ -2,11 +2,11 @@ require_relative 'helper'
 
 class TestSearchingSongs < JuryTest
   def test_search_returns_relevant_results
-    genre = Genre.find_or_create("Electronic")
+    genre = Genre.find_or_create_by(name: "Electronic")
     Song.create(name: "Pancake Lizard", artist: "Aphex Twin", genre: genre, intensity: 3, focusing: 0)
-    genre = Genre.find_or_create("Classical")
+    genre = Genre.find_or_create_by(name: "Classical")
     Song.create(name: "Cantus In Memory Of Benjamin Britten", artist: "Arvo Pärt", genre: genre, intensity: 4, focusing: 1)
-    genre = Genre.find_or_create("Jazz")
+    genre = Genre.find_or_create_by(name: "Jazz")
     Song.create(name: "Yègellé Tezeta (My Own Memory)", artist: "Mulatu Astatke", genre: genre, intensity: 4, focusing: 1)
 
     shell_output = ""

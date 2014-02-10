@@ -8,13 +8,13 @@ class Importer
   end
 
   def self.import_song(row_hash)
-    genre = Genre.find_or_create(row_hash["genre"])
+    genre = Genre.find_or_create_by(name: row_hash["genre"].strip)
     song = Song.create(
-      name: row_hash["name"],
-      artist: row_hash["artist"],
+      name: row_hash["name"].strip,
+      artist: row_hash["artist"].strip,
       genre: genre,
       intensity: row_hash["intensity"].to_i,
-      focusing: row_hash["focusing"].to_i
+      focusing: row_hash["focusing"]
     )
   end
 end

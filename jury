@@ -11,11 +11,14 @@ class Jury
   def initialize
     @options = ArgumentParser.parse
     Environment.environment = @options[:environment] || "production"
+    @options.delete(:environment)
   end
 
   def main
-    database = Environment.database_connection
-    case options[:command]
+    Environment.connect_to_database
+    command = options.delete(:command)
+
+    case command
     when "search"
       search_term = ask("Enter all or part of a song name to search for, then hit return.")
       search_songs_for(search_term)
@@ -56,8 +59,8 @@ class Jury
             |
       exit
     end
-    if song = Song.find(options[:id])
-      song.edit(options)
+    if song = Song.find_by(id: options[:id])
+      song.update(options)
     puts %|
     I\'ve updated song #{song.id}, \"#{song.name}\" by #{song.artist}, in the database.
     It's #{song.genre.name.downcase} with an intensity of #{song.intensity} and a focusing value of #{song.focusing}.
@@ -120,7 +123,6 @@ class Jury
   end
 
   def delete_song
-    database = Environment.database_connection
     if options[:name].nil? or options[:name].empty?
       puts %|
       I\'ll need the name of the song you want to delete.
@@ -131,9 +133,9 @@ class Jury
       name = options[:name]
       song = Song.search(options[:name])[0]
       if song.nil?
-      puts %|
+        puts %|
       I don\'t find any songs named \"#{name}\" in the database.
-            |
+              |
         exit
       end
       query =
@@ -144,23 +146,23 @@ class Jury
     Enter 'Y' for yes or 'N' for no, then hit return."
       verification = ask(query)
       if verification.downcase == "y"
-        database.execute("delete from songs where id = #{song.id}")
-      puts %|
+        song.destroy
+        puts %|
     I\'ve deleted \"#{song.name}\" from the database.
-            |
+              |
       elsif verification.downcase == "n"
-      puts %|
+        puts %|
     Okay.
 
     \"#{song.name}\" wasn\'t deleted, and remains in the database.
-            |
+              |
       else
-      puts %|
+        puts %|
     Sorry, I don't understand what you mean by \'#{verification}\'.
     I was looking for 'Y' or 'N'.
 
     \"#{song.name}\" wasn\'t deleted, and remains in the database.
-            |
+              |
       end
     end
   end
@@ -168,8 +170,7 @@ class Jury
   def print_report
     puts %|
     I can analyze the types of songs you marked as best for concentration.
-    My report will show the combinations of genre and intensity you concentrate to best.
-          |
+    My report will show the combinations of genre and intensity you concentrate to best.|
     query =
     "Before I start, do you have any guesses?
     Enter 'Y' for yes or 'N' for no, then hit return."
@@ -195,18 +196,14 @@ class Jury
     sleep 2 # adds 1 second delay for dramatic pause
     puts %|
     You concentrate best to these types of music:
-
           |
-    database = Environment.database_connection
-    database.results_as_hash = true
-    results = database.execute("SELECT genres.name, intensity, count(*) AS num_rows FROM songs INNER JOIN genres ON songs.genre_id = genres.id WHERE focusing = 1 GROUP BY genre_id, intensity ORDER BY num_rows DESC LIMIT 7")
+    results = ActiveRecord::Base.connection.raw_connection.execute("SELECT genres.name, intensity, count(*) AS num_rows FROM songs INNER JOIN genres ON songs.genre_id = genres.id WHERE focusing = 1 GROUP BY genre_id, intensity ORDER BY num_rows DESC LIMIT 7")
     results.map do |row_hash|
       name = row_hash["name"]
       intensity = row_hash["intensity"]
       num_rows = row_hash["num_rows"]
       puts %|
-#{name} with an intensity level of #{intensity}    -----    you currently have #{num_rows} of this combination
-            |
+#{name} with an intensity level of #{intensity}    -----    you currently have #{num_rows} of this combination|
     end
     puts
   end

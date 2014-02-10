@@ -4,15 +4,13 @@ require_relative '../lib/environment'
 class JuryTest < MiniTest::Unit::TestCase
   def setup
     Environment.environment = "test"
-  end
-
-  def database
-    Environment.database_connection
+    Environment.connect_to_database
   end
 
   def teardown
-    database.execute("delete from songs")
-    database.execute("delete from genres")
+    # The Database Cleaner gem will do this for us:
+    Genre.destroy_all
+    Song.destroy_all
   end
 
   def execute_popen command

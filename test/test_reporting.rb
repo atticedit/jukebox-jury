@@ -32,8 +32,15 @@ class TestReporting < JuryTest
       "Since I was looking for 'Y' or 'N', I'll take that as a no."
   end
 
-  def test_user_doesnt_have_a_guess
+  def test_the_correct_number_of_songs_are_imported
     import_data
+    assert_equal 30, Song.all.count
+  end
+
+  def test_user_doesnt_have_a_guess
+    skip
+    import_data
+    puts Song.all
     shell_output = ""
     IO.popen("./jury report --environment test", 'r+') do |pipe|
       pipe.puts "N"
