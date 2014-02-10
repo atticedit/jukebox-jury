@@ -24,7 +24,7 @@ class TestDeletingSongs < JuryTest
       pipe.puts "Y"
       shell_output = pipe.read
     end
-    assert_includes_in_order shell_output,
+    assert_includes shell_output,
       "I\'ve deleted \"Crusoe\" from the database."
   end
 
@@ -37,6 +37,7 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
+      "Okay."
       "\"Crusoe\" wasn\'t deleted, and remains in the database."
   end
 
@@ -49,8 +50,8 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "Sorry, I don't understand what you mean by \'X'.",
-      "I was looking for 'Y' or 'N'.",
+      "Sorry, I don't understand what you mean by \'X'."
+      "I was looking for 'Y' or 'N'."
       "\"Crusoe\" wasn\'t deleted, and remains in the database."
   end
 

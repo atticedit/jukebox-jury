@@ -8,7 +8,6 @@ class JuryTest < MiniTest::Unit::TestCase
   end
 
   def teardown
-    # The Database Cleaner gem will do this for us:
     Genre.destroy_all
     Song.destroy_all
   end

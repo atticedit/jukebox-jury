@@ -11,9 +11,9 @@ class TestListingSongs < JuryTest
 
     command_output = `./jury list --environment test`
     assert_includes_in_order command_output,
-      "Songs in the database:",
-      "\"Buck Dance\" by Hobart Smith, Bluegrass, intensity: 3, focusing value: true, id: #{buck_dance.id}",
-      "\"Finally Back\" by Lazerbeak, Hip Hop, intensity: 5, focusing value: true, id: #{finally_back.id}",
+      "Songs in the database:"
+      "\"Buck Dance\" by Hobart Smith, Bluegrass, intensity: 3, focusing value: true, id: #{buck_dance.id}"
+      "\"Finally Back\" by Lazerbeak, Hip Hop, intensity: 5, focusing value: true, id: #{finally_back.id}"
       "\"The White Hole\" by Knodel, Electronic, intensity: 3, focusing value: true, id: #{the_white_hole.id}"
   end
 end

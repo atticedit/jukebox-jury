@@ -11,9 +11,9 @@ class TestAddingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "Enter the number representing the song's genre, and hit return:",
-      "1. Classical",
-      "2. Jazz",
+      "Enter the number representing the song's genre, and hit return:"
+      "1. Classical"
+      "2. Jazz"
       "3. Punk"
   end
 
@@ -27,7 +27,7 @@ class TestAddingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "I added a song by Hüsker Dü named \"Celebrated Summer\".",
+      "I added a song by Hüsker Dü named \"Celebrated Summer\"."
       "It's punk with an intensity of 5 and a focusing value of false."
   end
 
@@ -39,7 +39,7 @@ class TestAddingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "I added a song by Hüsker Dü named \"Celebrated Summer\".",
+      "I added a song by Hüsker Dü named \"Celebrated Summer\"."
       "It's unclassified with an intensity of 5 and a focusing value of false."
   end
 

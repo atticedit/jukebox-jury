@@ -17,7 +17,7 @@ class TestImportingSongs < JuryTest
       "Make The Road By Walking, Menahan Street Band, Funk, 3, true",
       "Parchman Farm Blues, Bukka White, Blues, 3, false",
       "Telford Reprise, Swearing At Motorists, Indie Rock, 2, true"
-    ]
+                ]
     actual = Song.all.map do |song|
       "#{song.name}, #{song.artist}, #{song.genre.name}, #{song.intensity}, #{song.focusing}"
     end
