@@ -197,6 +197,7 @@ class Jury
     puts %|
     You concentrate best to these types of music:
           |
+    Environment.connect_to_database
     results = ActiveRecord::Base.connection.raw_connection.execute("SELECT genres.name, intensity, count(*) AS num_rows FROM songs INNER JOIN genres ON songs.genre_id = genres.id WHERE focusing = 1 GROUP BY genre_id, intensity ORDER BY num_rows DESC LIMIT 7")
     results.map do |row_hash|
       name = row_hash["name"]
