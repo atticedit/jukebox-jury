@@ -29,7 +29,7 @@ class TestReporting < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "Since the available options are 'Y' or 'N', I'll take that as a no."
+      "Since I was looking for 'Y' or 'N', I'll take that as a no."
   end
 
   def test_user_doesnt_have_a_guess

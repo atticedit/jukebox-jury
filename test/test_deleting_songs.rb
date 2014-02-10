@@ -10,9 +10,9 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "I\'ve found a song named 'Crusoe' by The Ex & Tom Cora."
+      "I\'ve found a song named \"Crusoe\" by The Ex & Tom Cora."
       "It's in the Punk genre, with intensity of 4 and focusing value of 1."
-      "Are you sure you want to delete 'Crusoe'?"
+      "Are you sure you want to delete \"Crusoe\"?"
       "Enter 'Y' for yes or 'N' for no, then hit return."
   end
 
@@ -25,7 +25,7 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "I\'ve deleted Crusoe' from the database."
+      "I\'ve deleted \"Crusoe\" from the database."
   end
 
   def test_user_declines_deletion
@@ -37,7 +37,7 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "'Crusoe' wasn\'t deleted, and remains in the database."
+      "\"Crusoe\" wasn\'t deleted, and remains in the database."
   end
 
   def test_user_enters_bad_input_for_deletion_verification
@@ -49,7 +49,9 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes_in_order shell_output,
-      "Your available options are 'Y' or 'N'. 'Crusoe' wasn\'t deleted, and remains in the database."
+      "Sorry, I don't understand what you mean by \'X'.",
+      "I was looking for 'Y' or 'N'.",
+      "\"Crusoe\" wasn\'t deleted, and remains in the database."
   end
 
   def test_delete_deletes_row
@@ -97,8 +99,8 @@ class TestDeletingSongs < JuryTest
 
   def test_error_message_for_missing_song_to_delete
     command = "./jury delete"
-    expected = "I\'ll need the name of the song you want to delete. Try your command again."
-    assert_command_output expected, command
+    expected = "I\'ll need the name of the song you want to delete."
+    assert_third_to_last_command_output expected, command
   end
 
   def test_error_message_when_song_to_delete_isnt_found
@@ -109,6 +111,6 @@ class TestDeletingSongs < JuryTest
       shell_output = pipe.read
     end
     assert_includes shell_output,
-      "'Cattle Drive' was not found in the database."
+      "I don't find any songs named \"Cattle Drive\" in the database."
   end
 end

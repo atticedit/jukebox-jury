@@ -1,6 +1,8 @@
 module Interactions
   def ask(question)
-    puts question
+    puts %|
+    #{question}
+    |
     return $stdin.gets.chomp
   end
 

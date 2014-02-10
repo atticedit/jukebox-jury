@@ -24,7 +24,19 @@ class JuryTest < MiniTest::Unit::TestCase
     shell_output
   end
 
-  def assert_command_output expected, command
+  def assert_third_to_last_command_output expected, command
+    shell_output = execute_popen(command)
+    actual = shell_output.strip.split("\n")[-3]
+    assert_equal expected, actual
+  end
+
+  def assert_second_to_last_command_output expected, command
+    shell_output = execute_popen(command)
+    actual = shell_output.strip.split("\n")[-2]
+    assert_equal expected, actual
+  end
+
+  def assert_last_command_output expected, command
     shell_output = execute_popen(command)
     actual = shell_output.strip.split("\n").last
     assert_equal expected, actual

@@ -19,34 +19,34 @@ class TestSong < JuryTest
 
   def test_to_s_prints_details
     song = Song.create(name: "Mercy Mercy", artist: "Booker T. & The MGs", intensity: 4, focusing: 1)
-    expected = "\'Mercy Mercy\' by Booker T. & The MGs, Unclassified, intensity: 4, focusing value: 1, id: #{song.id}"
+    expected = "\"Mercy Mercy\" by Booker T. & The MGs, Unclassified, intensity: 4, focusing value: 1, id: #{song.id}"
     assert_equal expected, song.to_s
   end
 
-  def test_update_doesnt_insert_new_row
+  def test_edit_doesnt_insert_new_row
     genre = Genre.find_or_create("Punk")
     song = Song.create(name: "Cruso", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
-    song_count_before_update = Song.count
-    song.update(name: "Crusoe")
-    song_count_after_update = Song.count
-    assert_equal song_count_before_update, song_count_after_update
+    song_count_before_edit = Song.count
+    song.edit(name: "Crusoe")
+    song_count_after_edit = Song.count
+    assert_equal song_count_before_edit, song_count_after_edit
   end
 
-  def test_update_saves_to_the_database
+  def test_edit_saves_to_the_database
     song = Song.create(name: "Cruso", artist: "The Ex", intensity: 3, focusing: 0)
     id = song.id
-    song.update(name: "Crusoe", artist: "The Ex & Tom Cora", intensity: 4, focusing: 1)
-    updated_song = Song.find(id)
+    song.edit(name: "Crusoe", artist: "The Ex & Tom Cora", intensity: 4, focusing: 1)
+    edited_song = Song.find(id)
     expected = ["Crusoe", "The Ex & Tom Cora", 4, 1]
-    actual = [updated_song.name, updated_song.artist, updated_song.intensity, updated_song.focusing]
+    actual = [edited_song.name, edited_song.artist, edited_song.intensity, edited_song.focusing]
     assert_equal expected, actual
   end
 
-  def test_update_is_reflected_in_existing_instance
+  def test_edit_is_reflected_in_existing_instance
     genre = Genre.find_or_create("Unk")
     song = Song.create(name: "Cruso", artist: "The Ex", genre: genre, intensity: 3, focusing: 0)
     genre = Genre.find_or_create("Punk")
-    song.update(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
+    song.edit(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre, intensity: 4, focusing: 1)
     expected = ["Crusoe", "The Ex & Tom Cora", "Punk", 4, 1]
     actual = [song.name, song.artist, song.genre.name, song.intensity, song.focusing]
     assert_equal expected, actual
@@ -74,7 +74,7 @@ class TestSong < JuryTest
     assert_equal genre.id, genre_id, "Genre.id and song.genre_id should be the same"
   end
 
-  def test_save_updates_genre_id
+  def test_save_edits_genre_id
     genre1 = Genre.find_or_create("Punk")
     genre2 = Genre.find_or_create("Jazz")
     song = Song.create(name: "Crusoe", artist: "The Ex & Tom Cora", genre: genre1, intensity: 4, focusing: 1)

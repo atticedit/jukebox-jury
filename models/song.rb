@@ -3,7 +3,7 @@ class Song
   attr_reader :id
 
   def initialize attributes = {}
-    update_attributes(attributes)
+    edit_attributes(attributes)
     self.genre ||= Genre.default
   end
 
@@ -26,8 +26,8 @@ class Song
     song
   end
 
-  def update(attributes = {})
-    update_attributes(attributes)
+  def edit(attributes = {})
+    edit_attributes(attributes)
     save
   end
 
@@ -95,7 +95,7 @@ class Song
   end
 
   def to_s
-    "\'#{name}\' by #{artist}, #{genre.name}, intensity: #{intensity}, focusing value: #{focusing}, id: #{id}"
+    "\"#{name}\" by #{artist}, #{genre.name}, intensity: #{intensity}, focusing value: #{focusing}, id: #{id}"
   end
 
   def ==(other)
@@ -108,7 +108,7 @@ class Song
     @id = id
   end
 
-  def update_attributes(attributes)
+  def edit_attributes(attributes)
     [:name, :artist, :genre, :intensity, :focusing].each do |attr|
       if attributes[attr]
         self.send("#{attr}=", attributes[attr])

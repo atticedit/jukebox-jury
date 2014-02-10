@@ -38,7 +38,7 @@ class ArgumentParser
   def self.validate options
     errors = []
     if options[:name].nil? or options[:name].empty?
-      errors << "\nI\'ll need the name of the song you\'re adding."
+      errors << "I\'ll need the name of the song you\'re adding."
     end
 
     missing_things = []
@@ -46,7 +46,7 @@ class ArgumentParser
     missing_things << "intensity" unless options[:intensity]
     missing_things << "focusing value" unless options[:focusing]
     unless missing_things.empty?
-      errors << "I\'ll need the #{missing_things.join(" and ")} of the song you\'re adding.\n\n"
+      errors << "I\'ll need the #{missing_things.join(" and ")} of the song you\'re adding."
     end
     errors
   end
